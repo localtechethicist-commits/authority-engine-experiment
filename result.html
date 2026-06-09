@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Authority Engine™ Scorecard</title>
+<!-- OG defaults — overridden dynamically by JS once archetype is known -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Authority Engine™ by We Build Proper">
+<meta property="og:url" content="https://authority-engine-xi.vercel.app/result.html">
+<meta id="og-title" property="og:title" content="My Business Owner Archetype — Authority Engine™">
+<meta id="og-description" property="og:description" content="I just discovered my Business Owner Archetype on the Authority Engine™. Take the free 4-minute diagnostic to find yours.">
+<meta id="og-image" property="og:image" content="https://authority-engine-xi.vercel.app/img/og/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta id="tw-title" name="twitter:title" content="My Business Owner Archetype — Authority Engine™">
+<meta id="tw-description" name="twitter:description" content="I just discovered my Business Owner Archetype on the Authority Engine™. Take the free 4-minute diagnostic to find yours.">
+<meta id="tw-image" name="twitter:image" content="https://authority-engine-xi.vercel.app/img/og/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  body { background: var(--surface); }
+
+  /* ── Result nav ── */
+  .result-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 18px 32px; display: flex; align-items: center; justify-content: space-between;
+    background: rgba(250,250,247,0.92); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .result-nav-logo { text-decoration: none; }
+  .result-nav-logo span { font-family: 'Inter', system-ui, sans-serif; font-size: 1.05rem; color: var(--ink); }
+  .result-nav-logo span em { color: var(--accent); font-style: italic; }
+
+  /* ── Page layout ── */
+  .result-page { max-width: 860px; margin: 0 auto; padding: 96px 20px 80px; }
+
+  /* ── Top intro ── */
+  .result-intro { text-align: center; margin-bottom: 48px; }
+  .result-eyebrow { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+  .result-intro h1 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); margin-bottom: 12px; }
+  .result-intro p  { font-size: 1.05rem; color: var(--ink-muted); max-width: 540px; margin: 0 auto; }
+
+  /* ── Archetype badge ── */
+  .archetype-badge {
+    border-radius: var(--radius-lg); padding: 32px 32px 28px;
+    margin-bottom: 24px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .arch-badge-top { display: flex; align-items: center; gap: 16px; }
+  .arch-emoji { font-size: 2.4rem; line-height: 1; }
+  .arch-title-group { flex: 1; }
+  .arch-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 4px; }
+  .arch-name  { font-family: 'Inter', system-ui, sans-serif; font-size: clamp(1.5rem, 3vw, 2.2rem); line-height: 1.1; }
+  .arch-range { font-size: 0.8rem; color: var(--ink-muted); margin-top: 4px; }
+  .arch-hook  { font-size: 1.02rem; color: var(--ink-light); line-height: 1.6; border-top: 1px solid var(--border); padding-top: 16px; }
+  .mirror-list { list-style: none; display: flex; flex-direction: column; gap: 8px; padding-top: 4px; }
+  .mirror-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; color: var(--ink-light); line-height: 1.5; }
+  .mirror-list li::before { content: '—'; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── Score card ── */
+  .score-card {
+    background: var(--ink); border-radius: var(--radius-lg);
+    padding: 32px; margin-bottom: 24px;
+    display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center;
+  }
+  .score-number-wrap { text-align: center; }
+  .score-number { font-family: 'Inter', system-ui, sans-serif; font-size: 5rem; color: white; line-height: 1; }
+  .score-denom { font-size: 1.1rem; color: rgba(255,255,255,0.3); margin-top: 4px; }
+  .score-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-top: 8px; }
+  .score-right h3 { font-size: 0.95rem; color: rgba(255,255,255,0.5); margin-bottom: 20px; font-weight: 500; letter-spacing: 0.02em; }
+
+  /* Dimension bars */
+  .dim-row { margin-bottom: 12px; }
+  .dim-label { display: flex; gap: 8px; align-items: center; margin-bottom: 5px; font-size: 0.8rem; color: rgba(255,255,255,0.55); }
+  .dim-label span:first-child { flex: 1; }
+  .dim-val { font-weight: 600; color: rgba(255,255,255,0.7); flex-shrink: 0; white-space: nowrap; }
+  .dim-track { height: 7px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
+  .dim-fill  { height: 100%; border-radius: 4px; width: 0%; transition: width 0.8s cubic-bezier(.22,1,.36,1); }
+
+  /* ── Diagnosis block ── */
+  .diagnosis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .diag-card { background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
+  .diag-card.state-card { grid-column: 1 / -1; }
+  .diag-card h3 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .diag-state-name { font-family: 'Inter', system-ui, sans-serif; font-size: 1.5rem; color: var(--ink); margin-bottom: 8px; }
+  .diag-state-note { font-size: 0.9rem; color: var(--ink-light); line-height: 1.6; }
+  .confidence-badge { display: inline-block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(19,221,163,0.06); color: var(--accent); border: 1px solid rgba(19,221,163,0.10); border-radius: var(--radius-pill); padding: 4px 12px; margin-top: 12px; }
+
+  /* ── Primary bottleneck ── */
+  .bottleneck-card { background: white; border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: var(--radius-lg); padding: 28px 28px 24px; margin-bottom: 16px; }
+  .bottleneck-card h3 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .bottleneck-headline { font-size: 1.2rem; font-weight: 600; color: var(--ink); margin-bottom: 12px; }
+  .bottleneck-body { font-size: 0.92rem; color: var(--ink-light); line-height: 1.65; margin-bottom: 16px; }
+  .impact-forward { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .if-block h4 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 6px; }
+  .if-block p  { font-size: 0.85rem; color: var(--ink-light); line-height: 1.55; }
+
+  /* Secondary section */
+  #secondarySection { display: none; }
+  .secondary-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; margin-bottom: 16px; }
+  .secondary-card h3 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 8px; }
+  .secondary-card h4 { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+  .secondary-card p  { font-size: 0.875rem; color: var(--ink-light); line-height: 1.6; }
+
+  /* Perception conflict */
+  #perceptionNote { display: none; }
+  .perception-card { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 16px; }
+  .perception-card .perception-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #d97706; margin-bottom: 6px; }
+  .perception-card p { font-size: 0.875rem; color: var(--ink-light); line-height: 1.55; }
+
+  /* ── CTA ── */
+  .cta-section { background: var(--ink); border-radius: var(--radius-lg); padding: 40px 36px; text-align: center; margin-top: 32px; position: relative; overflow: hidden; }
+  .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(19,221,163,0.16) 0%, transparent 70%); pointer-events: none; }
+  .cta-section h2 { font-size: clamp(1.5rem, 3vw, 2rem); color: white; margin-bottom: 12px; position: relative; }
+  .cta-section p  { font-size: 0.95rem; color: rgba(255,255,255,0.5); max-width: 480px; margin: 0 auto 28px; line-height: 1.65; position: relative; }
+  .cta-section a  { position: relative; }
+  .cta-note { font-size: 0.78rem; color: rgba(255,255,255,0.25); margin-top: 14px; position: relative; }
+  .cta-retake { color: rgba(255,255,255,0.35); font-size: 0.82rem; margin-top: 8px; display: block; position: relative; }
+  .cta-retake:hover { color: rgba(255,255,255,0.6); }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .result-nav { padding: 14px 20px; }
+    .score-card  { grid-template-columns: 1fr; gap: 20px; text-align: center; }
+    .diagnosis-grid { grid-template-columns: 1fr; }
+    .diag-card.state-card { grid-column: 1; }
+    .impact-forward { grid-template-columns: 1fr; }
+    .cta-section { padding: 32px 24px; }
+  }
+</style>
+<link rel="stylesheet" href="css/brand.css">
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="result-nav">
+  <a href="index.html" class="result-nav-logo">
+    <img src="img/wbp-logo-wbp.png" alt="We Build Proper" style="height:52px; width:auto; display:block;">
+  </a>
+  <a href="index.html" class="nav-cta" style="font-size:0.82rem;padding:9px 18px;">← Take Again</a>
+</nav>
+
+<main class="result-page">
+
+  <!-- Intro -->
+  <div class="result-intro fade-up">
+    <span class="result-eyebrow">Your Scorecard Is Ready</span>
+    <h1><span id="greeting"></span>Here's Where Your Business Stands</h1>
+    <p>Based on your 19 answers, here is your Business Owner Archetype, your score, and what's holding you back most.</p>
+  </div>
+
+  <!-- Archetype Badge -->
+  <div class="archetype-badge fade-up delay-1" id="archetypeBadge">
+    <div class="arch-badge-top">
+      <div class="arch-emoji" id="archetypeEmoji"></div>
+      <div class="arch-title-group">
+        <div class="arch-label">Your Business Owner Archetype</div>
+        <div class="arch-name" id="archetypeName"></div>
+        <div class="arch-range" id="archetypeRange"></div>
+      </div>
+    </div>
+    <div class="arch-hook" id="archetypeHook"></div>
+    <ul class="mirror-list" id="mirrorList"></ul>
+  </div>
+
+  <!-- Score + Dimension Bars -->
+  <div class="score-card fade-up delay-2">
+    <div class="score-number-wrap">
+      <div class="score-number" id="scoreNumber">0</div>
+      <div class="score-denom">out of 100</div>
+      <div class="score-label">Authority Score</div>
+    </div>
+    <div class="score-right">
+      <h3>Your 5 Growth Dimensions</h3>
+      <div id="dimBars"></div>
+    </div>
+  </div>
+
+  <!-- State Diagnosis + Confidence -->
+  <div class="diagnosis-grid fade-up delay-3">
+    <div class="diag-card state-card">
+      <h3>Business State</h3>
+      <div class="diag-state-name" id="stateName"></div>
+      <p class="diag-state-note" id="stateNote"></p>
+      <span class="confidence-badge" id="confidenceBadge"></span>
+    </div>
+  </div>
+
+  <!-- Perception conflict (shown if Q17 conflicts with engine) -->
+  <div id="perceptionNote">
+    <div class="perception-card fade-up">
+      <div class="perception-label">Note on your perceived challenge</div>
+      <p id="perceptionText"></p>
+    </div>
+  </div>
+
+  <!-- Primary Bottleneck -->
+  <div class="bottleneck-card fade-up">
+    <h3>Primary Growth Bottleneck</h3>
+    <div class="bottleneck-headline" id="primaryHeadline"></div>
+    <div class="bottleneck-body" id="primaryBody"></div>
+    <div class="impact-forward">
+      <div class="if-block">
+        <h4>Impact</h4>
+        <p id="primaryImpact"></p>
+      </div>
+      <div class="if-block">
+        <h4>Forward shift</h4>
+        <p id="primaryForward"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secondary Bottleneck (shown if applicable) -->
+  <div id="secondarySection">
+    <div class="secondary-card fade-up">
+      <h3>Secondary Factor</h3>
+      <h4 id="secondaryName"></h4>
+      <p id="secondaryBody"></p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section fade-up">
+    <h2>Want to Know What to Do About This?</h2>
+    <p>Book a free 30-minute strategy session. We'll walk through your scorecard, dig into your diagnosis, and show you the clearest path forward.</p>
+    <a href="#" class="btn btn-primary cta-calendly" style="font-size:1rem;padding:16px 36px;">Book My Strategy Session →</a>
+    <p class="cta-note">Free. 30 minutes. No obligation.</p>
+    <a href="index.html" class="cta-retake">← Retake the scorecard</a>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" class="footer-logo">
+      <img src="img/wbp-logo-white.png" alt="We Build Proper" style="height:72px; width:auto; display:block;">
+    </a>
+    <div class="footer-links">
+      <a href="#">LinkedIn</a>
+      <a href="#">Instagram</a>
+      <a href="mailto:marketing@webuildproper.com.sg">marketing@webuildproper.com.sg</a>
+    </div>
+    <span class="footer-copy">© 2025 Euforia Collective · Singapore</span>
+  </div>
+</footer>
+
+<script>
+  /* Scroll animations */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script>
+/* Update OG tags once archetype is known from sessionStorage */
+(function() {
+  try {
+    const result = JSON.parse(sessionStorage.getItem('ae_result') || 'null');
+    if (!result || !result.archetype) return;
+    const archetype = result.archetype;
+    const score = result.score || 0;
+    const ogImages = {
+      'Invisible Operator': '/img/og/og-invisible-operator.png',
+      'Hustling Builder':   '/img/og/og-hustling-builder.png',
+      'Rising Authority':   '/img/og/og-rising-authority.png',
+      'Market Leader':      '/img/og/og-market-leader.png'
+    };
+    const title = `I'm a ${archetype} (${score}/100) — Authority Engine™`;
+    const desc  = `My Business Owner Archetype is ${archetype}. Take the free Authority Engine™ diagnostic to find yours — 4 minutes, brutally honest.`;
+    const img   = 'https://authority-engine-xi.vercel.app' + (ogImages[archetype] || '/img/og/og-default.png');
+    document.getElementById('og-title').setAttribute('content', title);
+    document.getElementById('og-description').setAttribute('content', desc);
+    document.getElementById('og-image').setAttribute('content', img);
+    document.getElementById('tw-title').setAttribute('content', title);
+    document.getElementById('tw-description').setAttribute('content', desc);
+    document.getElementById('tw-image').setAttribute('content', img);
+    document.title = title;
+  } catch(e) {}
+})();
+</script>
+<script src="js/result.js"></script>
+</body>
+</html>

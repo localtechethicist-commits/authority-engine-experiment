@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Authority Engine™ — Diagnostic Brand System for Business Owners</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+  :root {
+    --ink: #0f0f10;
+    --ink-light: #3a3a42;
+    --ink-muted: #8a8a96;
+    --accent: #13dda3;
+    --cream: #fafaf7;
+    --white: #ffffff;
+    --surface: #f4f4f0;
+    --border: rgba(2,40,20,0.08);
+    --border-strong: rgba(2,40,20,0.15);
+    --shadow-sm: 0 2px 8px rgba(2,40,20,0.06);
+    --shadow-md: 0 8px 32px rgba(2,40,20,0.10);
+    --shadow-lg: 0 24px 64px rgba(2,40,20,0.14);
+    --radius: 14px;
+    --radius-lg: 20px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--cream); color: var(--ink); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+  h1, h2 { font-family: 'Inter', system-ui, sans-serif; font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; }
+  h3 { font-family: 'Inter', system-ui, sans-serif; font-weight: 600; letter-spacing: -0.01em; }
+  p { line-height: 1.65; color: var(--ink-light); }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+  .grid-12 { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; }
+  section { padding: 120px 0; }
+
+  .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1); }
+  .fade-up.visible { opacity: 1; transform: none; }
+  .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; }
+  .delay-3 { transition-delay: 0.3s; } .delay-4 { transition-delay: 0.4s; }
+  .delay-5 { transition-delay: 0.5s; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 18px 32px; display: flex; align-items: center; justify-content: space-between;
+    background: rgba(247,250,252,0.90); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border); transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: var(--shadow-sm); }
+  .nav-logo { text-decoration: none; display: flex; flex-direction: column; gap: 1px; line-height: 1; }
+  .nav-logo-top { font-family: 'Inter', system-ui, sans-serif; font-size: 1.2rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .nav-logo-main { font-family: 'Inter', system-ui, sans-serif; font-size: 2.3rem; color: var(--ink); letter-spacing: -0.02em; }
+  .nav-logo-main span { color: var(--accent); font-style: italic; }
+  .nav-cta { background: var(--ink); color: var(--cream); border: none; padding: 10px 22px; border-radius: 40px; font-family: 'Inter', system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; cursor: pointer; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s, background 0.2s; }
+  .nav-cta:hover { transform: scale(1.03); box-shadow: 0 6px 20px rgba(2,40,20,0.2); background: var(--accent); }
+
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 16px 32px; border-radius: 40px; font-family: 'Inter', system-ui, sans-serif; font-size: 0.95rem; font-weight: 500; cursor: pointer; text-decoration: none; border: none; transition: transform 0.2s cubic-bezier(.22,1,.36,1), box-shadow 0.2s; }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { transform: scale(1.03) translateY(-1px); box-shadow: 0 12px 32px rgba(19,221,163,0.20); }
+  .btn-dark { background: var(--ink); color: var(--cream); }
+  .btn-dark:hover { transform: scale(1.03) translateY(-1px); box-shadow: 0 12px 32px rgba(2,40,20,0.25); }
+  .btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--border-strong); }
+  .btn-outline:hover { transform: scale(1.03); border-color: var(--ink); }
+  .link-secondary { color: var(--ink); text-decoration: none; font-weight: 500; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 6px; border-bottom: 1px solid transparent; transition: border-color 0.2s; padding-bottom: 2px; }
+  .link-secondary:hover { border-color: var(--ink); }
+
+  .eyebrow { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+  .eyebrow-dark { color: var(--ink-muted); }
+  #founder .eyebrow, #framework .eyebrow, #offer-intro .eyebrow, #transformation .eyebrow, #proof .eyebrow, #pricing .eyebrow { color: var(--ink-muted); }
+
+  /* ─── HERO ─── */
+  #hero {
+    padding-top: 0; padding-bottom: 0;
+    min-height: 100vh; display: flex; align-items: stretch;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1800&q=80&auto=format&fit=crop');
+    background-size: cover; background-position: center 40%;
+    filter: brightness(0.22) saturate(0.5);
+  }
+  .hero-bg-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(2,40,20,0.85) 0%, rgba(2,40,20,0.55) 60%, rgba(19,221,163,0.06) 100%);
+  }
+  .hero-inner {
+    grid-column: 1 / -1;
+    display: grid; grid-template-columns: 6fr 5fr; gap: 64px; align-items: center;
+    position: relative; z-index: 2;
+    padding: 180px 0 100px;
+  }
+  .hero-h1 { font-size: clamp(2.8rem, 4.5vw, 4rem); color: white; margin-bottom: 24px; line-height: 1.08; }
+  .hero-h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub { font-size: 1.1rem; max-width: 500px; margin-bottom: 40px; color: rgba(255,255,255,0.65); line-height: 1.7; }
+  .hero-actions { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .hero-link-alt { color: rgba(255,255,255,0.6); text-decoration: none; font-weight: 500; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 6px; border-bottom: 1px solid rgba(255,255,255,0.2); transition: border-color 0.2s, color 0.2s; padding-bottom: 2px; }
+  .hero-link-alt:hover { color: white; border-color: rgba(255,255,255,0.5); }
+
+  .credibility-strip {
+    display: flex; gap: 0; margin-top: 64px;
+    border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius); overflow: hidden;
+    background: rgba(255,255,255,0.05); backdrop-filter: blur(12px);
+  }
+  .cred-item { flex: 1; padding: 18px 20px; display: flex; align-items: center; gap: 10px; border-right: 1px solid rgba(255,255,255,0.08); font-size: 0.82rem; font-weight: 500; color: rgba(255,255,255,0.75); }
+  .cred-item:last-child { border-right: none; }
+  .cred-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+  /* Hero right: portrait card */
+  .hero-portrait-wrap {
+    position: relative; overflow: hidden; border-radius: 20px;
+    aspect-ratio: 3/4; width: 100%; max-width: 420px; max-height: 560px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+  }
+  .hero-slide {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center 20%;
+    display: block;
+    opacity: 0;
+    transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity;
+  }
+  .hero-slide.active {
+    opacity: 1;
+  }
+  .hero-portrait-badge {
+    position: absolute; bottom: 16px; left: 16px;
+    background: var(--accent); color: white;
+    border-radius: var(--radius); padding: 18px 22px;
+    box-shadow: 0 12px 32px rgba(19,221,163,0.30);
+    font-size: 0.82rem; line-height: 1.4; font-weight: 500;
+  }
+  .hero-portrait-badge strong { display: block; font-size: 1.4rem; font-family: 'Inter', system-ui, sans-serif; font-weight: 400; line-height: 1.1; margin-bottom: 4px; }
+  .floating-badge-top {
+    position: absolute; top: 16px; right: 16px;
+    background: white; color: var(--ink);
+    border-radius: var(--radius); padding: 14px 18px;
+    box-shadow: var(--shadow-lg);
+    font-size: 0.78rem; line-height: 1.4; font-weight: 600; text-align: center;
+    border: 1px solid var(--border);
+  }
+  .floating-badge-top span { display: block; color: var(--accent); font-size: 1.2rem; font-family: 'Inter', system-ui, sans-serif; font-weight: 400; }
+
+  /* ─── PROBLEM ─── */
+  #problem { background: var(--white); }
+  .problem-inner { grid-column: 1 / -1; }
+  .problem-h2 { font-size: clamp(2rem, 3.5vw, 3rem); max-width: 740px; margin-bottom: 20px; }
+  .problem-body { font-size: 1.05rem; max-width: 640px; margin-bottom: 56px; }
+  .problem-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 56px; }
+  .prob-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px; position: relative; overflow: hidden; }
+  .prob-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--border); transition: background 0.3s; }
+  .prob-card:hover::after { background: var(--accent); }
+  .prob-card h4 { font-size: 0.92rem; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+  .prob-card p { font-size: 0.8rem; color: var(--ink-muted); line-height: 1.5; }
+  .bold-statement { background: var(--ink); color: var(--cream); border-radius: var(--radius); padding: 36px 40px; font-family: 'Inter', system-ui, sans-serif; font-size: clamp(1.3rem, 2vw, 1.7rem); text-align: center; font-weight: 400; }
+
+  /* ─── SINGAPORE CONTEXT BAND ─── */
+  #sg-band {
+    padding: 0; height: 380px; overflow: hidden; position: relative;
+  }
+  .sg-band-img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center 60%;
+    filter: brightness(0.35) saturate(0.6);
+  }
+  .sg-band-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(2,40,20,0.9) 0%, rgba(2,40,20,0.3) 100%);
+    display: flex; align-items: center;
+  }
+  .sg-band-content { padding: 0 64px; max-width: 720px; }
+  .sg-band-eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 16px; }
+  .sg-band-headline { font-family: 'Inter', system-ui, sans-serif; font-size: clamp(1.6rem, 2.5vw, 2.2rem); color: white; line-height: 1.2; margin-bottom: 20px; letter-spacing: -0.02em; }
+  .sg-band-body { font-size: 0.95rem; color: rgba(255,255,255,0.55); line-height: 1.7; max-width: 520px; }
+
+  /* ─── FRAMEWORK ─── */
+  #framework { background: var(--cream); }
+  .framework-inner { grid-column: 1 / -1; text-align: center; }
+  .framework-h2 { font-size: clamp(1.8rem, 3vw, 2.8rem); margin-bottom: 64px; }
+  .trust-chain { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 64px; }
+  .chain-node { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 32px 40px; text-align: center; flex: 1; max-width: 280px; box-shadow: var(--shadow-sm); transition: transform 0.3s, box-shadow 0.3s; }
+  .chain-node:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  .chain-node.accent-node { background: var(--ink); color: white; border-color: var(--ink); }
+  .chain-node.accent-node p { color: rgba(255,255,255,0.7); }
+  .chain-node h3 { font-size: 1.4rem; margin-bottom: 10px; }
+  .chain-node.accent-node h3 { color: white; }
+  .chain-node p { font-size: 0.875rem; }
+  .chain-arrow { font-size: 1.4rem; color: var(--accent); padding: 0 12px; flex-shrink: 0; }
+  .framework-close { max-width: 640px; margin: 0 auto; font-size: 1.05rem; color: var(--ink-light); }
+  .framework-close strong { color: var(--ink); }
+
+  /* ─── SHIFT ─── */
+  #shift { background: var(--ink); color: var(--cream); }
+  #shift p { color: rgba(250,250,247,0.65); }
+  #shift .eyebrow { color: rgba(255,255,255,0.4); }
+  .shift-inner { grid-column: 1 / -1; }
+  .shift-h2 { font-size: clamp(2rem, 3.5vw, 3rem); color: var(--cream); margin-bottom: 12px; }
+  .shift-sub { font-size: 1.1rem; color: rgba(247,250,252,0.5); margin-bottom: 48px; font-style: italic; font-family: 'Inter', system-ui, sans-serif; }
+  .shift-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .shift-col { border-radius: var(--radius); padding: 36px 32px; transition: transform 0.25s cubic-bezier(.22,1,.36,1), box-shadow 0.25s, border-color 0.25s, background 0.25s; }
+  .shift-col.without { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+  .shift-col.with { background: rgba(19,221,163,0.10); border: 1px solid rgba(19,221,163,0.18); }
+  .shift-col:hover { transform: translateY(-4px); box-shadow: 0 18px 50px rgba(0,0,0,0.18); }
+  .shift-col.without:hover { border-color: rgba(255,255,255,0.16); }
+  .shift-col.with:hover { border-color: rgba(19,221,163,0.45); box-shadow: 0 18px 50px rgba(19,221,163,0.13); }
+  .shift-col-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px; }
+  .shift-col.without .shift-col-label { color: rgba(255,255,255,0.3); }
+  .shift-col.with .shift-col-label { color: var(--ink-muted); }
+  .shift-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .shift-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.95rem; color: rgba(250,250,247,0.7); line-height: 1.5; }
+  .shift-list li .marker { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; margin-top: 2px; }
+  .without .marker { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.3); }
+  .with .marker { background: rgba(19,221,163,0.28); color: #0aad81; }
+
+  /* ─── OFFER INTRO ─── */
+  #offer-intro { background: var(--cream); }
+  .offer-intro-inner { grid-column: 2 / 12; text-align: center; }
+  .offer-intro-h2 { font-size: clamp(2rem, 3.5vw, 3.2rem); margin-bottom: 16px; }
+  .offer-intro-sub { font-size: 1.15rem; color: var(--ink-light); margin-bottom: 28px; }
+  .offer-reframe { display: inline-block; background: var(--ink); border: 1px solid var(--ink); border-radius: 40px; padding: 12px 24px; font-size: 0.875rem; color: white; font-style: italic; }
+
+  /* ─── DELIVERABLES ─── */
+  #deliverables { background: var(--white); padding-top: 0; }
+  .deliverables-header { grid-column: 1 / -1; margin-bottom: 16px; }
+  .deliverables-header h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); }
+
+  .process-image-strip {
+    grid-column: 1 / -1;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;
+    margin-bottom: 48px;
+  }
+  .process-img-card {
+    border-radius: var(--radius); overflow: hidden; position: relative; aspect-ratio: 4/3;
+  }
+  .process-img-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s cubic-bezier(.22,1,.36,1); }
+  .process-img-card:hover img { transform: scale(1.04); }
+  .process-img-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 20px 18px 16px;
+    background: linear-gradient(to top, rgba(2,40,20,0.85) 0%, transparent 100%);
+    font-size: 0.78rem; font-weight: 600; color: white; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+
+  .deliv-grid { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .deliv-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px 24px; transition: transform 0.3s, box-shadow 0.3s; }
+  .deliv-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  .deliv-card.highlight { background: #2a2a2e; border-color: #2a2a2e; color: var(--cream); display: flex; flex-direction: column; }
+  .deliv-card.highlight h3 { color: var(--cream); }
+  .deliv-card.highlight .deliv-features { flex: 1; }
+  .deliv-card.highlight .deliv-features li { color: rgba(250,250,247,0.75); }
+  .deliv-num { font-family: 'Inter', system-ui, sans-serif; font-size: 2.5rem; color: var(--border-strong); line-height: 1; margin-bottom: 12px; min-height: 42px; display: flex; align-items: center; }
+  .deliv-card.highlight .deliv-num { color: rgba(255,255,255,0.12); }
+  .deliv-card h3 { font-size: 0.95rem; margin-bottom: 16px; color: var(--ink); }
+  .deliv-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .deliv-features li { font-size: 0.82rem; color: var(--ink-light); display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; }
+  .deliv-features li::before { content: '✦'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+  .deliv-card.highlight .deliv-features li::before { color: rgba(170,170,255,0.8); }
+  .optional-tag { display: inline-block; background: rgba(19,221,163,0.10); color: #0aad81; border-radius: 40px; padding: 4px 12px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 18px; align-self: flex-start; }
+  .deliv-card.highlight .optional-tag { background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.70); }
+
+  /* ─── TRANSFORMATION ─── */
+  #transformation { background: var(--cream); }
+  .transform-inner { grid-column: 1 / -1; }
+  .transform-h2 { font-size: clamp(2rem, 3.5vw, 3rem); margin-bottom: 56px; }
+
+  .transform-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: stretch; }
+  .transform-image-col {
+    position: relative; overflow: hidden; border-radius: 20px;
+    min-height: 480px;
+  }
+  .transform-main-img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center 20%;
+    display: block; position: absolute; inset: 0;
+  }
+  .transform-right-col { display: flex; flex-direction: column; gap: 20px; }
+  .transform-right-col .compare-table { flex: 1; }
+  .transform-quote {
+    margin-top: 4px; padding: 20px 22px;
+    background: var(--ink); border-radius: var(--radius);
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+  .transform-quote::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #22c55e; flex-shrink: 0; margin-top: 7px; }
+  .transform-quote strong { color: white; font-weight: 600; display: block; margin-bottom: 4px; }
+  .transform-quote span { font-size: 0.85rem; color: rgba(255,255,255,0.65); line-height: 1.5; }
+
+  .compare-table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); transition: box-shadow 0.28s cubic-bezier(.22,1,.36,1), transform 0.28s cubic-bezier(.22,1,.36,1); }
+  .compare-table:hover { box-shadow: 0 0 0 1px rgba(19,221,163,0.06), 0 10px 30px rgba(2,40,20,0.10), 0 0 28px rgba(19,221,163,0.07); }
+  .compare-table th, .compare-table td { transition: box-shadow 0.22s cubic-bezier(.22,1,.36,1), background-color 0.22s, color 0.22s, transform 0.22s; position: relative; }
+  .compare-table th { padding: 18px 24px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .compare-table th:first-child { background: var(--surface); color: var(--ink-muted); text-align: left; width: 50%; border-right: 1px solid var(--border); }
+  .compare-table th:last-child { background: #2a2a2e; color: rgba(255,255,255,0.68); text-align: left; border-left: 2px solid rgba(255,255,255,0.45) !important; border-right: 2px solid rgba(255,255,255,0.28) !important; box-shadow: inset 1px 0 0 rgba(255,255,255,0.18), inset -1px 0 0 rgba(255,255,255,0.12); }
+  .compare-table td { padding: 16px 24px; font-size: 0.9rem; vertical-align: top; border-top: 1px solid var(--border); line-height: 1.5; }
+  .compare-table td:first-child { background: var(--white); color: var(--ink-muted); border-right: 1px solid var(--border); }
+  .compare-table td:last-child { background: #2a2a2e; color: rgba(247,250,252,0.90); border-left: 2px solid rgba(255,255,255,0.45) !important; border-right: 2px solid rgba(255,255,255,0.28) !important; border-top: 1px solid rgba(255,255,255,0.10) !important; border-bottom: 1px solid rgba(255,255,255,0.10) !important; box-shadow: inset 1px 0 0 rgba(255,255,255,0.18), inset -1px 0 0 rgba(255,255,255,0.12), inset 0 1px 0 rgba(255,255,255,0.14), inset 0 -1px 0 rgba(255,255,255,0.10); }
+  .compare-table td:last-child:hover, .compare-table th:last-child:hover { transform: translateY(-4px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55), inset 0 0 22px rgba(255,255,255,0.08), 0 8px 24px rgba(0,0,0,0.10), 0 0 18px rgba(255,255,255,0.12); z-index: 2; }
+  .compare-table td:first-child:hover, .compare-table th:first-child:hover { box-shadow: inset 0 0 0 1px rgba(19,221,163,0.14), 0 0 18px rgba(19,221,163,0.06); z-index: 1; }
+
+  /* ─── PRICING ─── */
+  #pricing { background: var(--white); }
+  .pricing-inner { grid-column: 1 / -1; text-align: center; }
+  .pricing-h2 { font-size: clamp(2rem, 3.5vw, 3rem); margin-bottom: 56px; }
+  .pricing-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: left; margin-bottom: 40px; }
+  .price-card { border-radius: var(--radius-lg); padding: 36px 32px; border: 1px solid var(--border); background: var(--surface); position: relative; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
+  .price-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .price-card.featured { background: var(--ink); border-color: var(--ink); color: var(--cream); }
+  .featured-badge { position: absolute; top: 20px; right: 20px; background: var(--accent); color: white; border-radius: 40px; padding: 5px 14px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .price-tier-name { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 16px; }
+  .featured .price-tier-name { color: rgba(255,255,255,0.4); }
+  .price-amount { font-family: 'Inter', system-ui, sans-serif; font-size: 3rem; color: var(--ink); line-height: 1; margin-bottom: 6px; }
+  .featured .price-amount { color: var(--cream); }
+  .price-currency { font-family: 'Inter', system-ui, sans-serif; font-size: 1.2rem; font-weight: 400; vertical-align: top; line-height: 1.8; }
+  .price-desc { font-size: 0.875rem; color: var(--ink-muted); margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--border); line-height: 1.6; }
+  .featured .price-desc { color: rgba(255,255,255,0.45); border-bottom-color: rgba(255,255,255,0.1); }
+  .price-btn { display: block; text-align: center; padding: 14px; border-radius: var(--radius); font-weight: 500; font-size: 0.9rem; cursor: pointer; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; }
+  .price-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .price-btn-outline { border: 1.5px solid var(--border-strong); color: var(--ink); background: transparent; }
+  .price-btn-primary { background: var(--accent); color: white; border: none; }
+  .price-btn-light { background: var(--cream); color: var(--ink); border: none; }
+  .pricing-note { max-width: 520px; margin: 0 auto 40px; font-size: 0.95rem; color: var(--ink-muted); font-style: italic; }
+  .pricing-note strong { color: var(--ink); font-style: normal; }
+
+  /* ─── LEAD MAGNET ─── */
+  #lead-magnet { background: var(--surface); padding: 80px 0; }
+  .lead-inner { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid var(--border); }
+  .lead-image-col { position: relative; min-height: 400px; }
+  .lead-image-col img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  .lead-image-col::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 60%, rgba(255,255,255,0.05) 100%); }
+  .lead-content-col { background: white; padding: 56px 52px; display: flex; flex-direction: column; justify-content: center; }
+  .lead-h2 { font-size: clamp(1.5rem, 2.2vw, 2rem); margin-bottom: 12px; }
+  .lead-sub { font-size: 1rem; color: var(--ink-light); margin-bottom: 8px; font-weight: 500; }
+  .lead-desc { font-size: 0.9rem; color: var(--ink-muted); margin-bottom: 32px; line-height: 1.65; }
+
+  /* ─── SCARCITY ─── */
+  #scarcity { padding: 64px 0; background: var(--cream); }
+  .scarcity-inner { grid-column: 1 / -1; text-align: center; }
+  .scarcity-inner h2 { font-size: clamp(1.6rem, 2.5vw, 2.2rem); margin-bottom: 14px; }
+  .scarcity-inner p { font-size: 1rem; color: var(--ink-muted); max-width: 480px; margin: 0 auto; }
+  .slots-indicator { display: inline-flex; gap: 8px; margin: 24px auto; justify-content: center; }
+  .slot { width: 14px; height: 14px; border-radius: 50%; }
+  .slot.taken { background: var(--accent); }
+  .slot.available { background: var(--border-strong); }
+
+  /* ─── FINAL CTA ─── */
+  #strategyModal { display:none; } #strategyModal.open { display:flex; }
+  #final-cta { background: var(--ink); color: var(--cream); text-align: center; position: relative; overflow: hidden; padding: 120px 0; }
+  .final-cta-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&q=80&auto=format&fit=crop');
+    background-size: cover; background-position: center;
+    opacity: 0.08; filter: saturate(0);
+  }
+  #final-cta::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(19,221,163,0.13) 0%, transparent 70%); pointer-events: none; }
+  .final-inner { grid-column: 2 / 12; position: relative; z-index: 1; }
+  .final-eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.35); display: block; margin-bottom: 20px; }
+  .final-h2 { font-size: clamp(2rem, 3.5vw, 3rem); color: var(--cream); margin-bottom: 48px; max-width: 700px; margin-left: auto; margin-right: auto; }
+  .final-actions { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
+
+  /* ─── FOOTER ─── */
+  footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.06); padding: 48px 32px; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+  .footer-logo { text-decoration: none; display: flex; flex-direction: column; gap: 1px; line-height: 1; }
+  .footer-logo-top { font-family: 'Inter', system-ui, sans-serif; font-size: 1.16rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
+  .footer-logo-main { font-family: 'Inter', system-ui, sans-serif; font-size: 2.1rem; color: var(--cream); letter-spacing: -0.02em; }
+  .footer-logo-main span { color: var(--accent); font-style: italic; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: rgba(255,255,255,0.35); text-decoration: none; font-size: 0.82rem; transition: color 0.2s; }
+  .footer-links a:hover { color: rgba(255,255,255,0.7); }
+  .footer-copy { color: rgba(255,255,255,0.2); font-size: 0.78rem; }
+
+  /* Performance */
+  .btn, .nav-cta, .price-btn, .link-secondary, .hero-link-alt, .footer-links a { transition: transform 0.25s cubic-bezier(.22,1,.36,1), box-shadow 0.25s cubic-bezier(.22,1,.36,1), background 0.25s cubic-bezier(.22,1,.36,1), border-color 0.25s cubic-bezier(.22,1,.36,1), color 0.25s cubic-bezier(.22,1,.36,1); }
+  .price-card, .deliv-card, .prob-card, .chain-node, .transform-main-img, .hero-portrait, .process-img-card img { will-change: transform; }
+  .hero-portrait-badge, .floating-badge-top, .offer-reframe, .featured-badge { backdrop-filter: blur(8px); }
+  img { display: block; }
+
+  /* ─── HERO ANIMATIONS ─── */
+  .hero-word {
+    display: inline-block;
+    opacity: 0;
+    filter: blur(7px);
+    transform: translateY(9px);
+    animation: heroWordReveal 0.7s cubic-bezier(.22,1,.36,1) forwards;
+  }
+  @keyframes heroWordReveal {
+    to { opacity: 1; filter: blur(0px); transform: translateY(0); }
+  }
+
+  .hero-portrait-wrap.fade-up { transform: translateX(52px) !important; }
+
+  .floating-badge-top {
+    animation: badgeSpringTR 0.72s cubic-bezier(.34,1.56,.64,1) 1.15s both;
+  }
+  @keyframes badgeSpringTR {
+    from { opacity: 0; transform: translate(14px, -14px) scale(0.86); }
+    to   { opacity: 1; transform: translate(0, 0) scale(1); }
+  }
+
+  .hero-portrait-badge {
+    animation: badgeSpringBL 0.72s cubic-bezier(.34,1.56,.64,1) 1.35s both;
+  }
+  @keyframes badgeSpringBL {
+    from { opacity: 0; transform: translate(-14px, 14px) scale(0.86); }
+    to   { opacity: 1; transform: translate(0, 0) scale(1); }
+  }
+
+  .hero-actions .btn-primary { will-change: transform; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    .deliv-grid { grid-template-columns: repeat(3, 1fr); }
+    .problem-cards { grid-template-columns: repeat(2, 1fr); }
+    .process-image-strip { grid-template-columns: 1fr 1fr; }
+    .process-image-strip .process-img-card:last-child { display: none; }
+    .transform-layout { grid-template-columns: 1fr; }
+    .transform-image-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+    .transform-main-img { aspect-ratio: 4/3; }
+  }
+  @media (max-width: 768px) {
+    section { padding: 80px 0; }
+    .container { padding: 0 20px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 48px; padding: 140px 0 80px; }
+    .hero-portrait-wrap { display: none; }
+    .credibility-strip { flex-direction: column; }
+    .cred-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .cred-item:last-child { border-bottom: none; }
+    .sg-band-content { padding: 0 28px; }
+    .problem-cards { grid-template-columns: 1fr 1fr; }
+    .trust-chain { flex-direction: column; align-items: stretch; }
+    .chain-arrow { transform: rotate(90deg); text-align: center; padding: 8px 0; }
+    .chain-node { max-width: 100%; }
+    .shift-cols { grid-template-columns: 1fr; }
+    .deliv-grid { grid-template-columns: 1fr 1fr; }
+    .process-image-strip { grid-template-columns: 1fr; }
+    .pricing-cards { grid-template-columns: 1fr; }
+    .lead-inner { grid-template-columns: 1fr; }
+    .lead-image-col { min-height: 260px; }
+    .lead-content-col { padding: 40px 28px; }
+    .offer-intro-inner, .final-inner { grid-column: 1 / -1; }
+    nav { padding: 16px 20px; }
+    .btn { padding: 14px 24px; font-size: 0.9rem; }
+    .hero-actions { flex-direction: column; align-items: flex-start; }
+    .compare-table thead th, .compare-table td { padding: 12px 14px; font-size: 0.82rem; }
+    .transform-layout { grid-template-columns: 1fr; }
+    .transform-image-col { display: none; }
+    .final-actions { flex-direction: column; }
+    .final-actions .btn { width: 100%; justify-content: center; }
+  }
+  @media (max-width: 500px) {
+    .problem-cards { grid-template-columns: 1fr; }
+    .deliv-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ─── FOUNDER ─── */
+  #founder { background: var(--cream); }
+  .founder-inner { grid-column: 1 / -1; }
+  .founder-about-section { display: flex; flex-direction: column; align-items: center; }
+  .founder-h2 { font-size: clamp(1.8rem, 2.8vw, 2.4rem); margin-bottom: 28px; line-height: 1.15; }
+  .founder-lead { font-size: 1.05rem; color: var(--ink-light); margin-bottom: 32px; line-height: 1.7; display: flex; flex-direction: column; gap: 12px; }
+  .founder-lead strong { color: var(--ink); font-weight: 600; }
+  .founder-origin { margin-bottom: 0; display: flex; flex-direction: column; gap: 14px; }
+  .founder-origin p { font-size: 0.975rem; color: var(--ink-light); line-height: 1.7; }
+  .founder-pattern {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin: 32px 0;
+  }
+  .founder-pattern > p { font-size: 0.9rem; color: var(--ink-light); margin-bottom: 14px; }
+  .founder-pattern ul { list-style: none; display: flex; flex-direction: column; gap: 10px; padding: 0; margin: 0; }
+  .founder-pattern li { font-size: 0.9rem; color: var(--ink-light); line-height: 1.6; display: flex; align-items: flex-start; gap: 10px; }
+  .founder-pattern li::before { content: '—'; color: var(--accent); font-weight: 600; flex-shrink: 0; }
+  .founder-conclusion { font-size: 0.975rem; color: var(--ink-light); line-height: 1.7; margin-bottom: 40px; }
+  .founder-divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+  .founder-about-h3 {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+  .founder-about-body { display: flex; flex-direction: column; gap: 14px; max-width: 720px; }
+  .founder-about-body p { font-size: 0.9rem; color: var(--ink-light); line-height: 1.7; }
+  .founder-close { max-width: 720px;
+    margin-top: 40px;
+    padding: 28px 32px;
+    background: var(--ink);
+    border-radius: var(--radius);
+    color: var(--cream);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .founder-close p { color: rgba(250,250,247,0.75); font-size: 0.9rem; line-height: 1.7; }
+  .founder-close strong { color: var(--cream); }
+  .founder-photo-placeholder {
+    background: var(--surface);
+    border: 1.5px dashed rgba(2,40,20,0.18);
+    border-radius: var(--radius-lg);
+    aspect-ratio: 3/4;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--ink-muted);
+    text-align: center;
+    padding: 32px;
+  }
+  .founder-ph-icon {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 8px;
+    background: rgba(2,40,20,0.06);
+  }
+  .founder-ph-icon svg { opacity: 0.35; }
+  .founder-photo-placeholder .ph-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted); }
+  .founder-photo-placeholder .ph-name { font-size: 0.875rem; color: var(--ink-light); font-weight: 500; }
+  .founder-photo-placeholder .ph-note { font-size: 0.72rem; color: var(--ink-muted); line-height: 1.5; margin-top: 4px; }
+
+  /* ─── PROOF ─── */
+  #proof { background: var(--surface); }
+  .proof-inner { grid-column: 1 / -1; text-align: center; }
+  .proof-h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); margin-bottom: 16px; }
+  .proof-sub { font-size: 1rem; color: var(--ink-muted); max-width: 520px; margin: 0 auto 56px; line-height: 1.65; }
+  .proof-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    text-align: left;
+  }
+  .proof-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s;
+  }
+  .proof-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(2,40,20,0.08); }
+  .proof-industry-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(19,221,163,0.05);
+    border-radius: 40px;
+    padding: 5px 14px;
+    align-self: flex-start;
+  }
+  .proof-quote {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 1.05rem;
+    color: var(--ink);
+    line-height: 1.55;
+    font-style: italic;
+    flex: 1;
+  }
+  .proof-quote::before { content: '\201C'; }
+  .proof-quote::after  { content: '\201D'; }
+  .proof-meta { display: flex; flex-direction: column; gap: 4px; border-top: 1px solid var(--border); padding-top: 20px; }
+  .proof-name  { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+  .proof-title { font-size: 0.8rem; color: var(--ink-muted); }
+  .proof-metric {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 10px 16px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink);
+    align-self: flex-start;
+  }
+  .proof-metric::before { content: '✦'; color: var(--accent); font-size: 0.7rem; }
+
+  /* RESPONSIVE — FOUNDER + PROOF */
+  @media (max-width: 1024px) {
+    /* founder-about-section already centered */
+  }
+  @media (max-width: 768px) {
+    .proof-cards { grid-template-columns: 1fr; }
+    .founder-close { padding: 24px 22px; }
+    .founder-pattern { padding: 20px; }
+    .founder-photo-placeholder { aspect-ratio: 4/3; max-width: 100%; }
+  }
+</style>
+<link rel="stylesheet" href="css/brand.css">
+</head>
+<body>
+
+<!-- Scroll targets for nav anchors -->
+<div id="questionnaire" style="position:relative; top:-100px;"></div>
+<div id="lead-form" style="position:relative; top:-100px;"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="#">
+    <img src="img/wbp-logo-wbp.png" alt="We Build Proper" style="height:72px; width:auto; display:block;">
+  </a>
+  <a class="nav-cta btn" href="#final-cta">Start your free Brand Diagnostic</a>
+</nav>
+
+<!-- ─── SECTION 1: HERO ─── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-bg-overlay"></div>
+  <div class="container" style="max-width:1200px;">
+    <div class="grid-12">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <span class="eyebrow fade-up">For Business Owners</span>
+          <h1 class="hero-h1 fade-up delay-1">What Type of Business Owner Are You — and What Is Really Holding Growth Back?</h1>
+          <p class="hero-sub fade-up delay-2">In 3 minutes, uncover your Business Owner Archetype, see your score, and identify the bottleneck limiting your growth.</p>
+          <div class="hero-actions fade-up delay-3">
+            <a class="btn btn-primary" href="#final-cta">Start your free Brand Diagnostic</a>
+            <a class="hero-link-alt" href="#framework">See How the Engine Works →</a>
+          </div>
+          <div class="credibility-strip fade-up delay-4">
+            <div class="cred-item"><span class="cred-dot"></span> Diagnose First, Then Decide</div>
+            <div class="cred-item"><span class="cred-dot"></span> Built for Business Owners — Not Vanity Branding</div>
+            <div class="cred-item"><span class="cred-dot"></span> Designed for Trust, Clarity, and Conversion</div>
+          </div>
+        </div>
+        <!-- Hero right: portrait carousel (5-image rotation) -->
+        <div class="hero-portrait-wrap fade-up delay-2">
+          <img class="hero-slide active" src="img/Hero1.png" alt="Business owner — portrait 1" loading="eager">
+          <img class="hero-slide"        src="img/Hero2.png" alt="Business owner — portrait 2" loading="lazy">
+          <img class="hero-slide"        src="img/Hero3.png" alt="Business owner — portrait 3" loading="lazy">
+          <img class="hero-slide"        src="img/Hero4.png" alt="Business owner — portrait 4" loading="lazy">
+          <img class="hero-slide"        src="img/Hero5.png" alt="Business owner — portrait 5" loading="lazy">
+          <div class="hero-portrait-badge"><strong>3 min</strong>Clear bottleneck diagnosis</div>
+          <div class="floating-badge-top">The Authority<br>Engine™<br><span>by We Build Proper.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 2: PROBLEM ─── -->
+<section id="problem">
+  <div class="container">
+    <div class="grid-12">
+      <div class="problem-inner">
+        <span class="eyebrow eyebrow-dark fade-up">The Real Problem</span>
+        <h2 class="problem-h2 fade-up delay-1">You Do Not Have a Lead Problem. You Have a Clarity Problem.</h2>
+        <p class="problem-body fade-up delay-2">Most business owners are not short on effort. They are short on clear positioning, visible authority, and a system that converts attention into revenue. When the market cannot quickly understand who you are and why you matter, growth becomes expensive.</p>
+        <div class="problem-cards fade-up delay-3">
+          <div class="prob-card">
+            <h4>Referral dependency</h4>
+            <p>Growth is unpredictable and you have no real control over your pipeline.</p>
+          </div>
+          <div class="prob-card">
+            <h4>Invisible in your market</h4>
+            <p>You look like everyone else, so prospects cannot tell why you are the right choice.</p>
+          </div>
+          <div class="prob-card">
+            <h4>Competing on price</h4>
+            <p>Without differentiation, every conversation defaults to the lowest number.</p>
+          </div>
+          <div class="prob-card">
+            <h4>No ownable narrative</h4>
+            <p>You know what you do, but your market still does not know what you stand for.</p>
+          </div>
+        </div>
+        <div class="bold-statement fade-up delay-4">When the problem is unclear, every solution becomes costly.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SINGAPORE CONTEXT BAND ─── -->
+<div id="sg-band">
+  <img class="sg-band-img" src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1800&q=80&auto=format&fit=crop" alt="Singapore CBD skyline" loading="lazy">
+  <div class="sg-band-overlay">
+    <div class="sg-band-content">
+      <div class="sg-band-eyebrow">Built for Singapore's Market</div>
+      <h2 class="sg-band-headline">In a highly competitive market, being good is not enough — you need to be understood, trusted, and chosen quickly.</h2>
+      <p class="sg-band-body">From founders and consultants to SME owners across Singapore, we understand the trust signals, market expectations, and buying behaviour that shape decisions here.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SECTION: FOUNDER / AUTHORITY ─── -->
+<section id="founder">
+  <div class="container">
+    <div class="grid-12">
+      <div class="founder-inner">
+        <span class="eyebrow fade-up">The Builder Behind The Framework</span>
+
+        <!-- Top: framework origin copy — full width -->
+        <h2 class="founder-h2 fade-up delay-1">Developed by Business Builders Who Have Worked Across Branding, Growth, and Business Transformation</h2>
+
+        <div class="founder-lead fade-up delay-2">
+          <p>We Build Proper exists to solve a problem most agencies avoid naming:</p>
+          <p><strong>Most businesses do not have a marketing problem.<br>They have a positioning problem.</strong></p>
+        </div>
+
+        <div class="founder-origin fade-up delay-3">
+          <p>The Authority Engine™️ was developed by Melvin Ho through direct work with SMEs, founders, and growth-stage companies across branding, marketing, and business transformation engagements.</p>
+          <p>It was not created as a theoretical model. It was built from repeated real-world patterns observed across industries — where businesses were investing in marketing activity, but still struggling to achieve consistent growth.</p>
+          <p>The root cause was rarely execution. It was clarity.</p>
+        </div>
+
+        <div class="founder-pattern fade-up delay-3">
+          <p>Businesses without clear positioning consistently fall into the same pattern:</p>
+          <ul>
+            <li>They compete on price instead of value.</li>
+            <li>They rely on referrals instead of demand generation.</li>
+            <li>They scale activity without improving conversion quality.</li>
+          </ul>
+        </div>
+
+        <p class="founder-conclusion fade-up delay-4">This pattern became the foundation of the Authority Engine™️ — a structured diagnostic system designed to identify the true constraint behind business growth and rebuild the clarity, positioning, and authority required for scale.</p>
+
+        <hr class="founder-divider fade-up delay-4">
+
+        <!-- Bottom: About Melvin — stacked full-width layout -->
+        <div class="founder-about-section">
+          <h3 class="founder-about-h3 fade-up delay-4">About Melvin Ho</h3>
+
+          <img src="img/Melvin-Ho.jpg" alt="Melvin Ho — Founder, We Build Proper" class="fade-up delay-3" style="width:100%; max-width:360px; border-radius:var(--radius-lg); object-fit:cover; aspect-ratio:3/4; display:block; margin:0 auto 32px;">
+
+          <div class="founder-about-body fade-up delay-4">
+            <p>Melvin Ho is a business builder and brand strategist focused on helping companies solve positioning and growth constraints at a structural level, rather than through tactical marketing execution.</p>
+            <p>His work spans branding, marketing strategy, and business transformation projects with SMEs and growth-stage companies across multiple industries in Singapore and the region.</p>
+            <p>Rather than focusing on surface-level marketing outputs, his approach centres on diagnosing the underlying business clarity issues that affect demand, conversion, and long-term market perception.</p>
+            <p>This perspective forms the basis of the Authority Engine™️ — a framework built to help business owners understand what is actually limiting their growth, and how to rebuild a stronger market position from the ground up.</p>
+          </div>
+
+          <div class="founder-close fade-up delay-5">
+            <p>Today, We Build Proper works with founders and leadership teams who are not looking for more marketing activity, but for <strong>strategic clarity that changes how their business competes in the market.</strong></p>
+            <p>Not more campaigns. Not more content. Not more noise.</p>
+            <p>But a structurally stronger business position that supports long-term authority and sustainable growth.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 3: FRAMEWORK ─── -->
+<section id="framework">
+  <div class="container">
+    <div class="grid-12">
+      <div class="framework-inner">
+        <span class="eyebrow fade-up">The Authority Engine Method</span>
+        <h2 class="framework-h2 fade-up delay-1">Diagnose. Clarify. Execute.</h2>
+        <div class="trust-chain fade-up delay-2">
+          <div class="chain-node">
+            <h3>Diagnose</h3>
+            <p>Identify what is actually happening in your business.</p>
+          </div>
+          <div class="chain-arrow">→</div>
+          <div class="chain-node accent-node">
+            <h3>Clarity</h3>
+            <p>Pinpoint the bottleneck and the next best move.</p>
+          </div>
+          <div class="chain-arrow">→</div>
+          <div class="chain-node">
+            <h3>Execute</h3>
+            <p>Build the system that turns clarity into revenue.</p>
+          </div>
+        </div>
+        <p class="framework-close fade-up delay-3">Most businesses jump straight to execution. <strong>The right sequence creates better decisions, cleaner marketing, and stronger results.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 4: THE SHIFT ─── -->
+<section id="shift">
+  <div class="container">
+    <div class="grid-12">
+      <div class="shift-inner">
+        <span class="eyebrow fade-up">The Reframe</span>
+        <h2 class="shift-h2 fade-up delay-1">Branding Is Not Decoration. It Is Business Infrastructure.</h2>
+        <p class="shift-sub fade-up delay-2">Not aesthetics. Not noise. Not vanity.</p>
+        <p class="fade-up delay-2" style="color:rgba(250,250,247,0.55); max-width:580px; margin-bottom:48px;">The most expensive thing a business owner can do is stay unclear. When your market cannot immediately grasp who you are, what you stand for, and why you are the logical choice, they move on. That is not a sales problem. That is a system problem.</p>
+        <div class="shift-cols fade-up delay-3">
+          <div class="shift-col without">
+            <div class="shift-col-label">Without a System</div>
+            <ul class="shift-list">
+              <li><span class="marker">✕</span> Reactive revenue and inconsistent pipeline</li>
+              <li><span class="marker">✕</span> Price-sensitive conversations</li>
+              <li><span class="marker">✕</span> Long sales cycles that drain time and energy</li>
+              <li><span class="marker">✕</span> Wasted outbound effort with diminishing returns</li>
+            </ul>
+          </div>
+          <div class="shift-col with">
+            <div class="shift-col-label">With the Authority Engine™</div>
+            <ul class="shift-list">
+              <li><span class="marker">✓</span> Pre-sold enquiries that arrive with context</li>
+              <li><span class="marker">✓</span> Stronger perceived value from the first impression</li>
+              <li><span class="marker">✓</span> Shorter sales cycles because trust is already built</li>
+              <li><span class="marker">✓</span> More leverage over price, scope, and fit</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 5: OFFER INTRO ─── -->
+<section id="offer-intro">
+  <div class="container">
+    <div class="grid-12">
+      <div class="offer-intro-inner fade-up">
+        <span class="eyebrow">The Solution</span>
+        <h2 class="offer-intro-h2">Introducing The Authority Engine™</h2>
+        <p class="offer-intro-sub">A diagnostic-led brand and conversion system that helps business owners understand what is holding growth back — and gives them a clear path to fix it.</p>
+        <span class="offer-reframe">This is not branding for aesthetics. This is branding engineered for how serious businesses win trust, leads, and revenue.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 6: DELIVERABLES ─── -->
+<section id="deliverables" style="padding-top:80px;">
+  <div class="container">
+    <div class="grid-12">
+      <div class="deliverables-header fade-up" style="padding-top:40px;">
+        <span class="eyebrow eyebrow-dark">What's Included</span>
+        <h2>Five Components. One Cohesive System.</h2>
+      </div>
+      <!-- Process image strip -->
+      <div class="process-image-strip fade-up delay-1">
+        <div class="process-img-card">
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80&auto=format&fit=crop" alt="Brand strategy session" loading="lazy">
+          <div class="process-img-label">Strategy &amp; Positioning</div>
+        </div>
+        <div class="process-img-card">
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80&auto=format&fit=crop" alt="Brand identity design workspace" loading="lazy">
+          <div class="process-img-label">Identity &amp; Presence</div>
+        </div>
+        <div class="process-img-card">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&auto=format&fit=crop" alt="Content and growth performance" loading="lazy">
+          <div class="process-img-label">Content &amp; Growth</div>
+        </div>
+      </div>
+      <div class="deliv-grid">
+        <div class="deliv-card fade-up delay-1">
+          <div class="deliv-num">01</div>
+          <h3>Brand Diagnostic &amp; Positioning</h3>
+          <ul class="deliv-features">
+            <li>Market position and clear differentiation</li>
+            <li>Messaging that speaks to the right client</li>
+            <li>Audience clarity and decision-making insight</li>
+          </ul>
+        </div>
+        <div class="deliv-card fade-up delay-2">
+          <div class="deliv-num">02</div>
+          <h3>Brand Identity &amp; Authority Kit</h3>
+          <ul class="deliv-features">
+            <li>Logo and visual mark</li>
+            <li>Name card design</li>
+            <li>Visual direction and brand standards</li>
+          </ul>
+        </div>
+        <div class="deliv-card fade-up delay-3">
+          <div class="deliv-num">03</div>
+          <h3>Authority Landing Page</h3>
+          <ul class="deliv-features">
+            <li>High-conversion copy and structure</li>
+            <li>Lead capture system</li>
+            <li>Fully mobile-optimised build</li>
+          </ul>
+        </div>
+        <div class="deliv-card fade-up delay-4">
+          <div class="deliv-num">04</div>
+          <h3>30-Day Content Playbook</h3>
+          <ul class="deliv-features">
+            <li>Platform-specific content strategy</li>
+            <li>Plug-and-play post frameworks</li>
+            <li>Channel selection and cadence guidance</li>
+          </ul>
+        </div>
+        <div class="deliv-card highlight fade-up delay-5">
+          <div class="deliv-num">05</div>
+          <h3>Authority+</h3>
+          <ul class="deliv-features">
+            <li>Done-for-you content execution</li>
+            <li>Posting, optimisation, and iteration</li>
+            <li>Monthly performance review and reporting</li>
+          </ul>
+          <div class="optional-tag">Optional Add-On</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 7: TRANSFORMATION ─── -->
+<section id="transformation">
+  <div class="container">
+    <div class="grid-12">
+      <div class="transform-inner">
+        <span class="eyebrow fade-up">The Transformation</span>
+        <h2 class="transform-h2 fade-up delay-1">From Operator to Authority</h2>
+        <div class="transform-layout fade-up delay-2">
+          <div class="transform-image-col">
+            <img class="transform-main-img" src="img/Transformation.jpg" alt="Confident business professional with authority positioning" loading="lazy">
+          </div>
+          <div class="transform-right-col">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Operator Mode</th>
+                  <th>Authority Mode</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Chasing the next opportunity wherever it appears</td>
+                  <td>Attracting the right opportunities — they come to you</td>
+                </tr>
+                <tr>
+                  <td>Selling your service to whoever will consider it</td>
+                  <td>Being sought out by clients who already want to work with you</td>
+                </tr>
+                <tr>
+                  <td>Competing on price because there's no clear distinction</td>
+                  <td>Commanding a premium because your positioning makes it self-evident</td>
+                </tr>
+                <tr>
+                  <td>Inconsistent growth tied to effort, luck, and referrals</td>
+                  <td>Compounding growth built on a reputation that works while you sleep</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="transform-quote"><div><strong>Authority brands attract, not chase.</strong><span>The right clients arrive knowing why they want to work with you.</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION: SOCIAL PROOF ─── -->
+<section id="proof">
+  <div class="container">
+    <div class="grid-12">
+      <div class="proof-inner">
+        <span class="eyebrow fade-up">What Business Owners Say</span>
+        <h2 class="proof-h2 fade-up delay-1">Real Results From Real Business Owners</h2>
+        <p class="proof-sub fade-up delay-2">Every engagement starts with diagnosis. Every outcome is built on clarity.</p>
+
+        <div class="proof-cards fade-up delay-3">
+
+          <!-- ═══════════════════════════════════════════════════════
+               CASE STUDY CARD 1 — TO FILL IN
+               Fields to update:
+                 .proof-industry-tag  → industry/sector (e.g. "Professional Services")
+                 .proof-quote         → client's verbatim quote, 1–3 sentences
+                 .proof-name          → client first name or initials (e.g. "Jason T.")
+                 .proof-title         → role and company (e.g. "Founder, Arcline Consulting")
+                 .proof-metric        → one concrete result (e.g. "3× more qualified inbound leads")
+               ═══════════════════════════════════════════════════════ -->
+          <div class="proof-card">
+            <span class="proof-industry-tag">Professional Services</span>
+            <p class="proof-quote">Placeholder — replace with client's verbatim testimonial. One to three sentences capturing the key shift they experienced.</p>
+            <div class="proof-meta">
+              <span class="proof-name">Client Name</span>
+              <span class="proof-title">Role · Company Name</span>
+              <span class="proof-metric">Key outcome or result here</span>
+            </div>
+          </div>
+
+          <!-- ═══════════════════════════════════════════════════════
+               CASE STUDY CARD 2 — TO FILL IN
+               Same fields as Card 1 above.
+               ═══════════════════════════════════════════════════════ -->
+          <div class="proof-card">
+            <span class="proof-industry-tag">Retail &amp; E-Commerce</span>
+            <p class="proof-quote">Placeholder — replace with the second client's testimonial and their specific outcome when ready.</p>
+            <div class="proof-meta">
+              <span class="proof-name">Client Name</span>
+              <span class="proof-title">Role · Company Name</span>
+              <span class="proof-metric">Key outcome or result here</span>
+            </div>
+          </div>
+
+          <!-- ═══════════════════════════════════════════════════════
+               CASE STUDY CARD 3 — TO FILL IN
+               Same fields as Card 1 above.
+               ═══════════════════════════════════════════════════════ -->
+          <div class="proof-card">
+            <span class="proof-industry-tag">B2B / Consulting</span>
+            <p class="proof-quote">Placeholder — replace with the third client's testimonial and their specific outcome when ready.</p>
+            <div class="proof-meta">
+              <span class="proof-name">Client Name</span>
+              <span class="proof-title">Role · Company Name</span>
+              <span class="proof-metric">Key outcome or result here</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 8: PRICING ─── -->
+<section id="pricing">
+  <div class="container">
+    <div class="grid-12">
+      <div class="pricing-inner">
+        <span class="eyebrow fade-up">Investment</span>
+        <h2 class="pricing-h2 fade-up delay-1">Choose the Level That Matches Your Stage</h2>
+        <div class="pricing-cards fade-up delay-2">
+          <div class="price-card">
+            <div class="price-tier-name">Strategy Tier</div>
+            <div class="price-amount"><span class="price-currency">SGD</span>1,000</div>
+            <p class="price-desc">For business owners who need diagnosis and direction first — positioning clarity, bottleneck insight, and a strategic roadmap before deeper execution.</p>
+            <a class="price-btn price-btn-outline" href="#final-cta">Learn More</a>
+          </div>
+          <div class="price-card featured">
+            <span class="featured-badge">Most Popular</span>
+            <div class="price-tier-name">Authority Engine™</div>
+            <div class="price-amount"><span class="price-currency">SGD</span>3,000</div>
+            <p class="price-desc">The core system — strategy, identity, landing page, and 30-day content playbook. Built to turn clarity into authority and demand.</p>
+            <a class="price-btn price-btn-primary" href="#final-cta">Start the Authority Engine →</a>
+          </div>
+          <div class="price-card">
+            <div class="price-tier-name">Premium Tier</div>
+            <div class="price-amount"><span class="price-currency">SGD</span>8,000<span style="font-size:1.4rem;font-family:'Inter',system-ui,sans-serif">+</span></div>
+            <p class="price-desc">For business owners ready for full execution — brand implementation, collaterals, and ongoing support built around growth objectives.</p>
+            <a class="price-btn price-btn-outline" href="#" onclick="openStrategyModal();return false;">Let's Talk</a>
+          </div>
+        </div>
+        <p class="pricing-note fade-up delay-3">This is not a marketing expense. It is <strong>an investment in how your business is perceived, remembered, and chosen.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 9: LEAD MAGNET ─── -->
+<section id="lead-magnet">
+  <div class="container">
+    <div class="grid-12">
+      <div class="lead-inner fade-up">
+        <div class="lead-image-col">
+          <img src="https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?w=800&q=80&auto=format&fit=crop&crop=top" alt="Business owner focused on growth strategy" loading="lazy">
+        </div>
+        <div class="lead-content-col">
+          <h2 class="lead-h2">Not Sure Where Your Business Is Losing Momentum?</h2>
+          <p class="lead-sub">Get Your Free Brand Diagnostic</p>
+          <p class="lead-desc">A 3-minute assessment that reveals your archetype, your score, and the bottleneck limiting your growth — so you know what needs to happen next.</p>
+          <a class="btn btn-dark" href="#final-cta" style="align-self:flex-start;">Start the Free Brand Diagnostic →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 10: SCARCITY ─── -->
+<section id="scarcity">
+  <div class="container">
+    <div class="grid-12">
+      <div class="scarcity-inner fade-up">
+        <span class="eyebrow eyebrow-dark">Limited Availability</span>
+        <h2>We Only Work With a Small Number of Business Owners Each Month</h2>
+        <div class="slots-indicator">
+          <div class="slot taken"></div>
+          <div class="slot taken"></div>
+          <div class="slot taken"></div>
+          <div class="slot taken"></div>
+          <div class="slot available"></div>
+          <div class="slot available"></div>
+        </div>
+        <p>Every engagement is treated as a strategic collaboration — not a template job. That is how we keep the work sharp, relevant, and effective.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 11: FINAL CTA — email gate into quiz ─── -->
+<section id="final-cta">
+  <div class="final-cta-bg"></div>
+  <div class="container">
+    <div class="grid-12">
+      <div class="final-inner">
+        <span class="final-eyebrow">The next move is yours.</span>
+        <h2 class="final-h2 fade-up">The right clients are already out there. Make sure your business is clear enough to be chosen.</h2>
+        <div class="final-actions fade-up delay-1">
+          <a class="btn btn-primary" href="#" id="startDiagnosticBtn">Start My Brand Diagnostic</a>
+          <a class="btn btn-outline" href="#" onclick="openStrategyModal();return false;" style="color:var(--cream); border-color:rgba(255,255,255,0.2);">Book a Strategy Call</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── EMAIL GATE MODAL ─── -->
+<div id="emailGateModal" style="display:none; position:fixed; inset:0; z-index:200; background:rgba(2,40,20,0.75); backdrop-filter:blur(8px); align-items:center; justify-content:center;">
+  <div style="background:var(--white); border-radius:var(--radius-lg); padding:48px 44px; max-width:460px; width:calc(100% - 40px); position:relative; box-shadow:var(--shadow-lg);">
+    <button id="modalClose" style="position:absolute; top:18px; right:18px; background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--ink-muted); line-height:1;" aria-label="Close">×</button>
+    <span style="display:inline-block; font-size:0.72rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">Free Brand Diagnostic</span>
+    <h2 style="font-family:'Inter',system-ui,sans-serif; font-size:1.6rem; color:var(--ink); margin-bottom:8px; line-height:1.2;">Find your bottleneck in 3 minutes</h2>
+    <p style="font-size:0.9rem; color:var(--ink-muted); margin-bottom:28px; line-height:1.6;">Enter your details to start. You'll have your Business Owner Archetype and result before you finish your coffee.</p>
+    <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:16px;">
+      <input id="gateName" type="text" placeholder="Your name" autocomplete="given-name" style="padding:14px 16px; border:1.5px solid var(--border-strong); border-radius:var(--radius); font-family:'Inter',system-ui,sans-serif; font-size:0.95rem; color:var(--ink); outline:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border-strong)'">
+      <input id="gateEmail" type="email" placeholder="Your email address" autocomplete="email" style="padding:14px 16px; border:1.5px solid var(--border-strong); border-radius:var(--radius); font-family:'Inter',system-ui,sans-serif; font-size:0.95rem; color:var(--ink); outline:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border-strong)'">
+    </div>
+    <p id="gateError" style="display:none; color:#dc2626; font-size:0.82rem; margin-bottom:12px;">Please enter your name and a valid email address.</p>
+    <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer; margin-bottom:16px;">
+      <input id="gateConsent" type="checkbox" style="margin-top:3px; accent-color:var(--accent); width:15px; height:15px; flex-shrink:0;">
+      <span style="font-size:0.78rem; color:var(--ink-muted); line-height:1.55;">I agree to receive marketing communications from We Build Proper (a subsidiary of Euforia Singapore Pte Ltd) about business strategies and growth insights. I can unsubscribe at any time. <a href="/privacy-policy.html" target="_blank" style="color:var(--accent); text-decoration:underline;">Privacy Policy</a></span>
+    </label>
+    <p id="gateConsentError" style="display:none; color:#dc2626; font-size:0.82rem; margin-bottom:12px;">Please agree to our communications terms to continue.</p>
+    <button id="gateSubmit" type="button" class="btn btn-primary" style="width:100%; justify-content:center; padding:15px 32px;">Start My Brand Diagnostic →</button>
+    <p style="font-size:0.78rem; color:var(--ink-muted); margin-top:14px; text-align:center;">Free. No spam. No sales calls unless you book one.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a class="footer-logo" href="#">
+      <img src="img/wbp-logo-white.png" alt="We Build Proper" style="height:72px; width:auto; display:block;">
+    </a>
+    <div class="footer-links">
+      <a href="mailto:marketing@webuildproper.com.sg">marketing@webuildproper.com.sg</a>
+      <a href="/privacy-policy.html">Privacy Policy</a>
+    </div>
+    <span class="footer-copy">© 2026 We Build Proper · Singapore</span>
+  </div>
+</footer>
+
+<!-- ─── STRATEGY CALL MODAL ─── -->
+<div id="strategyModal" style="display:none;position:fixed;inset:0;z-index:300;align-items:center;justify-content:center;background:rgba(2,40,20,0.8);backdrop-filter:blur(12px);">
+  <div style="background:#fff;border-radius:var(--radius-lg);padding:44px 40px;max-width:480px;width:calc(100% - 40px);position:relative;box-shadow:0 40px 100px rgba(0,0,0,0.25);">
+    <button id="scClose" aria-label="Close" style="position:absolute;top:18px;right:18px;background:none;border:none;cursor:pointer;font-size:1.6rem;line-height:1;color:var(--ink-muted);">×</button>
+    <div id="scForm">
+      <h2 style="font-family:'Inter',system-ui,sans-serif;font-size:1.6rem;color:var(--ink);margin-bottom:12px;line-height:1.2;">Book a Strategy Call</h2>
+      <p style="font-size:0.95rem;color:var(--ink-muted);margin-bottom:28px;line-height:1.6;">Leave your details and we'll reach out to schedule your free 30-minute call.</p>
+
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px;">
+        <input id="scName" type="text" placeholder="Your name" autocomplete="given-name" style="padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--radius);font-family:'Inter',system-ui,sans-serif;font-size:0.95rem;color:var(--ink);outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        <input id="scEmail" type="email" placeholder="Email address" autocomplete="email" style="padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--radius);font-family:'Inter',system-ui,sans-serif;font-size:0.95rem;color:var(--ink);outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        <input id="scPhone" type="tel" placeholder="Contact number" autocomplete="tel" style="padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--radius);font-family:'Inter',system-ui,sans-serif;font-size:0.95rem;color:var(--ink);outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+
+      <div id="scError" style="display:none;color:#dc2626;font-size:0.82rem;margin-bottom:16px;text-align:center;">Please fill in all fields with valid info.</div>
+      <button id="scSubmit" type="button" style="width:100%;background:var(--accent);color:#fff;padding:14px 32px;border:none;border-radius:var(--radius-pill,40px);font-family:'Inter',system-ui,sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 32px rgba(19,221,163,0.20)'" onmouseout="this.style.transform='';this.style.boxShadow=''">Request a Call →</button>
+      <p style="font-size:0.78rem;color:var(--ink-muted);text-align:center;margin-top:14px;">No spam. We'll follow up within 1 business day.</p>
+    </div>
+    <div id="scSuccess" style="display:none;text-align:center;padding:20px 0;">
+      <div style="width:56px;height:56px;background:rgba(34,197,94,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <p style="font-size:1.1rem;color:var(--ink);font-weight:600;margin-bottom:8px;">You're on the list!</p>
+      <p style="font-size:0.9rem;color:var(--ink-muted);line-height:1.6;">We'll reach out within 1 business day to schedule your call.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* Scroll animations */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  /* Nav scroll shadow */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
+
+  /* ── Email gate modal ── */
+  const modal      = document.getElementById('emailGateModal');
+  const gateError  = document.getElementById('gateError');
+
+  function openGate() {
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('gateName').focus(), 60);
+  }
+  function closeGate() {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  /* All "Start Diagnostic" CTAs go straight to quiz — gate shown before result only */
+  document.getElementById('startDiagnosticBtn').addEventListener('click', e => { e.preventDefault(); window.location.href = 'quiz.html'; });
+  document.querySelectorAll('a[href="#final-cta"]').forEach(a => {
+    a.addEventListener('click', e => { e.preventDefault(); window.location.href = 'quiz.html'; });
+  });
+
+  /* Gate modal: close on backdrop click / Escape */
+  document.getElementById('emailGateModal').addEventListener('click', function(e) {
+    if (e.target === this) closeGate();
+  });
+  document.getElementById('modalClose').addEventListener('click', closeGate);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGate(); });
+
+  /* Gate modal: submit — validate, store lead, redirect to quiz */
+  document.getElementById('gateSubmit').addEventListener('click', () => {
+    const name    = document.getElementById('gateName').value.trim();
+    const email   = document.getElementById('gateEmail').value.trim();
+    const consent = document.getElementById('gateConsent').checked;
+    const err     = document.getElementById('gateError');
+    const cErr    = document.getElementById('gateConsentError');
+
+    err.style.display   = 'none';
+    cErr.style.display  = 'none';
+
+    let valid = true;
+    if (!name || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      err.style.display = 'block'; valid = false;
+    }
+    if (!consent) {
+      cErr.style.display = 'block'; valid = false;
+    }
+    if (!valid) return;
+
+    sessionStorage.setItem('ae_lead', JSON.stringify({ name, email, consent: true }));
+    try {
+      const url = SHEET_URL_IDX + '?data=' + encodeURIComponent(JSON.stringify({ name, email, consent: true, source: 'quiz_gate', submittedAt: new Date().toISOString() }));
+      new Image().src = url;
+    } catch(e) {}
+    closeGate();
+    window.location.href = 'quiz.html';
+  });
+
+  /* ── Strategy Call Modal ── */
+  function openStrategyModal() {
+    document.getElementById('strategyModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('scName').focus(), 60);
+  }
+  function closeStrategyModal() {
+    document.getElementById('strategyModal').style.display = 'none';
+    document.body.style.overflow = '';
+    document.getElementById('scForm').style.display = 'block';
+    document.getElementById('scSuccess').style.display = 'none';
+    document.getElementById('scError').style.display = 'none';
+    document.getElementById('scName').value = '';
+    document.getElementById('scEmail').value = '';
+    document.getElementById('scPhone').value = '';
+  }
+  document.getElementById('strategyModal').addEventListener('click', function(e) {
+    if (e.target === this) closeStrategyModal();
+  });
+  document.getElementById('scClose').addEventListener('click', closeStrategyModal);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeStrategyModal(); });
+
+  const SHEET_URL_IDX = 'https://script.google.com/macros/s/AKfycbyt7jIvcIKgib3eXpu78auD2aWmVuI49Ho6UzjN91-PAFYuk-SmQ4-TjcpRyiIBi3eUBg/exec';
+  document.getElementById('scSubmit').addEventListener('click', () => {
+    const name  = document.getElementById('scName').value.trim();
+    const email = document.getElementById('scEmail').value.trim();
+    const phone = document.getElementById('scPhone').value.trim();
+    const err   = document.getElementById('scError');
+    if (!name || !email || !phone || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      err.style.display = 'block'; return;
+    }
+    err.style.display = 'none';
+    try {
+      const url = SHEET_URL_IDX + '?data=' + encodeURIComponent(JSON.stringify({ name, email, phone, source:'strategy_call', submittedAt: new Date().toISOString() }));
+      new Image().src = url;
+    } catch(e) {}
+    document.getElementById('scForm').style.display = 'none';
+    document.getElementById('scSuccess').style.display = 'block';
+  });
+
+  /* ── Hero Enhancement 1 — word-by-word headline ── */
+  (function () {
+    const h1 = document.querySelector('.hero-h1');
+    if (!h1) return;
+    h1.style.opacity = '1';
+    h1.style.transform = 'none';
+    const counter = { n: 0 };
+    function wrapWords(node) {
+      if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+        const parts = node.textContent.split(/(\s+)/);
+        const frag = document.createDocumentFragment();
+        parts.forEach(part => {
+          if (!part.trim()) { frag.appendChild(document.createTextNode(part)); }
+          else {
+            const span = document.createElement('span');
+            span.className = 'hero-word';
+            span.textContent = part;
+            span.style.animationDelay = (0.18 + counter.n * 0.085) + 's';
+            counter.n++;
+            frag.appendChild(span);
+          }
+        });
+        node.parentNode.replaceChild(frag, node);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        Array.from(node.childNodes).forEach(wrapWords);
+      }
+    }
+    wrapWords(h1);
+  })();
+
+  /* ── Hero Enhancement 2 — magnetic CTA button ── */
+  (function () {
+    const heroBtns = document.querySelectorAll('.hero-actions .btn-primary');
+    heroBtns.forEach(btn => {
+      let raf;
+      btn.addEventListener('mousemove', e => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          const r  = btn.getBoundingClientRect();
+          const dx = (e.clientX - (r.left + r.width  / 2)) * 0.26;
+          const dy = (e.clientY - (r.top  + r.height / 2)) * 0.26;
+          btn.style.transform  = `translate(${dx}px, ${dy}px) scale(1.05)`;
+          btn.style.boxShadow  = '0 14px 38px rgba(19,221,163,0.22), 0 4px 12px rgba(19,221,163,0.13)';
+          btn.style.transition = 'transform 0.1s cubic-bezier(.22,1,.36,1), box-shadow 0.1s';
+        });
+      });
+      btn.addEventListener('mouseleave', () => {
+        cancelAnimationFrame(raf);
+        btn.style.transition = 'transform 0.45s cubic-bezier(.22,1,.36,1), box-shadow 0.45s';
+        btn.style.transform  = '';
+        btn.style.boxShadow  = '';
+      });
+    });
+  })();
+
+  /* ── Hero portrait rotation — 5-image crossfade ── */
+  (function () {
+    const slides = document.querySelectorAll('.hero-slide');
+    if (slides.length < 2) return;
+    let current = 0;
+    setInterval(() => {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 2500); // 2.5 seconds per portrait
+  })();
+</script>
+</body>
+</html>

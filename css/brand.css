@@ -1,0 +1,153 @@
+/* ─────────────────────────────────────────────
+   WE BUILD PROPER — Brand Experiment Overrides
+   RGB Digital Architecture / June 2026 V1.0
+   ───────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+/* ── BRAND TOKENS ── */
+:root {
+  --ink:           #022814;
+  --ink-light:     #52665a;
+  --ink-muted:     #52665a;
+  --accent:        #13dda3;
+  --cream:         #F7FAFC;
+  --white:         #FFFFFF;
+  --surface:       #F7FAFC;
+  --border:        rgba(2,40,20,0.08);
+  --border-strong: rgba(2,40,20,0.15);
+  --shadow-sm:     0 2px 8px  rgba(2,40,20,0.06);
+  --shadow-md:     0 8px 32px rgba(2,40,20,0.10);
+  --shadow-lg:     0 24px 64px rgba(2,40,20,0.14);
+  --color-accent-glow: rgba(19,221,163,0.20);
+  --color-accent-tint: rgba(19,221,163,0.08);
+  --color-accent-tint-border: rgba(19,221,163,0.20);
+}
+
+/* ── BASE TYPOGRAPHY ── */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+h3 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* ── REPLACE ALL INSTRUMENT SERIF / DM SANS REFERENCES ── */
+.nav-logo-top,
+.nav-logo-main,
+.nav-logo-main span,
+.footer-logo-main,
+.footer-logo-main span,
+.hero-portrait-badge strong,
+.floating-badge-top span,
+.bold-statement,
+.sg-band-headline,
+.shift-sub,
+.deliv-num,
+.price-amount,
+.price-currency,
+.proof-quote,
+.arch-name,
+.score-number,
+.diag-state-name,
+.res-arch-name,
+.nav-cta,
+.btn,
+input,
+textarea {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Weight adjustments where Instrument Serif 400 needs a heavier Inter equivalent */
+.bold-statement   { font-weight: 600; }
+.sg-band-headline { font-weight: 700; }
+.arch-name        { font-weight: 700; }
+.score-number     { font-weight: 700; }
+.deliv-num        { font-weight: 700; }
+.proof-quote      { font-style: italic; font-weight: 400; }
+.floating-badge-top span { font-weight: 700; }
+.hero-portrait-badge strong { font-weight: 700; }
+
+/* ── NAV BACKGROUND: swap cream rgba to new surface ── */
+nav {
+  background: rgba(247,250,252,0.90);
+}
+
+/* ── BUTTON HOVER GLOWS: replace blue with mint ── */
+.btn-primary:hover {
+  box-shadow: 0 12px 32px rgba(19,221,163,0.28);
+}
+.btn-dark:hover {
+  box-shadow: 0 12px 32px rgba(2,40,20,0.25);
+}
+.nav-cta:hover {
+  box-shadow: 0 6px 20px rgba(2,40,20,0.2);
+}
+
+/* ── SHIFT SECTION: accent-tinted cards ── */
+.shift-col.with {
+  background: rgba(19,221,163,0.10);
+  border: 1px solid rgba(19,221,163,0.25);
+}
+.shift-col.with:hover {
+  border-color: rgba(19,221,163,0.45);
+  box-shadow: 0 18px 50px rgba(19,221,163,0.14);
+}
+.with .marker {
+  background: rgba(19,221,163,0.35);
+  color: #0aad81;
+}
+
+/* ── OPTIONAL / FEATURE TAGS ── */
+.optional-tag {
+  background: rgba(19,221,163,0.12);
+  color: #0aad81;
+}
+
+/* ── PROOF / TESTIMONIAL CARD ── */
+.proof-card-accent {
+  background: rgba(19,221,163,0.07);
+}
+
+/* ── FINAL CTA radial glow ── */
+#final-cta::before {
+  background: radial-gradient(ellipse at center, rgba(19,221,163,0.15) 0%, transparent 70%);
+}
+
+/* ── FOOTER logo accent span ── */
+.footer-logo-main span {
+  color: rgba(19,221,163,0.85);
+  font-style: normal;
+}
+
+/* ── PURPLE TO GREEN CONVERSIONS ── */
+.hero-h1 em,
+.sg-band-eyebrow,
+.eyebrow[style*="rgba(140,140,255"] {
+  color: var(--accent) !important;
+}
+.shift-col.with .shift-col-label {
+  color: var(--accent) !important;
+}
+
+/* ── LOGO SWITCHING (light vs dark background context) ── */
+.logo-light-bg { display: block; }
+.logo-dark-bg  { display: none; }
+
+footer .logo-light-bg,
+.dark-nav .logo-light-bg {
+  display: none;
+}
+footer .logo-dark-bg,
+.dark-nav .logo-dark-bg {
+  display: block;
+}

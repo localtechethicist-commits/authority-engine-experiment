@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Result — The Authority Engine™</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Authority Engine™ by We Build Proper">
+<meta property="og:url" content="https://authority-engine-xi.vercel.app/thank-you.html">
+<meta id="og-title" property="og:title" content="My Business Owner Archetype — Authority Engine™">
+<meta id="og-description" property="og:description" content="I just discovered my Business Owner Archetype on the Authority Engine™. Take the free 4-minute diagnostic to find yours.">
+<meta id="og-image" property="og:image" content="https://authority-engine-xi.vercel.app/img/og/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta id="tw-title" name="twitter:title" content="My Business Owner Archetype — Authority Engine™">
+<meta id="tw-description" name="twitter:description" content="I just discovered my Business Owner Archetype on the Authority Engine™. Take the free 4-minute diagnostic to find yours.">
+<meta id="tw-image" name="twitter:image" content="https://authority-engine-xi.vercel.app/img/og/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+  :root{
+    --ink:#101114;--ink-light:#3b3f47;--ink-muted:#7a808d;
+    --accent:#13dda3;--surface:#f4f4f0;--border:rgba(2,40,20,0.07);
+    --arch-color:#13dda3;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  /* ── Page canvas ── */
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:#f0efeb;
+    min-height:100vh;
+    color:var(--ink);
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:72px 20px;
+    position:relative;
+    overflow-x:hidden;
+    overflow-y:auto;
+  }
+
+  /* ── Background text: sharp, full opacity ── */
+  .bg-text-layer{
+    position:fixed;
+    inset:0;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0;
+    padding:48px 40px;
+    pointer-events:none;
+    user-select:none;
+    z-index:0;
+    overflow:hidden;
+  }
+  .bg-col{
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:1.05rem;
+    font-weight:400;
+    letter-spacing:-0.01em;
+    line-height:1.85;
+    color:#101114;
+    padding:0 16px;
+    overflow:hidden;
+  }
+  .bg-col:first-child{ border-right:1px solid rgba(2,40,20,0.10); }
+  .bg-col b{ font-weight:700; font-size:1.15rem; }
+  .bg-col strong{ font-weight:800; font-size:1.3rem; letter-spacing:-0.02em; }
+  .bg-col .bg-label{
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:0.6rem; font-weight:700;
+    letter-spacing:0.18em; text-transform:uppercase;
+    opacity:0.5; display:block;
+    margin-bottom:4px; margin-top:20px;
+  }
+
+  /* ── Radial blur vignette: strong at edges, fades to clear at centre ── */
+  /* Achieved with a stacked blur overlay masked by a radial gradient */
+  .bg-blur-overlay{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    user-select:none;
+    z-index:1; /* sits above text, below card */
+
+    /* The blur effect: backdrop-filter blurs everything underneath */
+    backdrop-filter:blur(22px);
+    -webkit-backdrop-filter:blur(22px);
+
+    /* Blue zone (near card): barely blurred, slightly legible */
+    /* Red zone (outer): fully blurred, nothing readable */
+    -webkit-mask-image:radial-gradient(
+      ellipse 48% 62% at 50% 50%,
+      transparent      0%,
+      transparent      22%,
+      rgba(0,0,0,0.18) 30%,
+      rgba(0,0,0,0.48) 38%,
+      rgba(0,0,0,0.78) 46%,
+      rgba(0,0,0,0.94) 54%,
+      black            62%
+    );
+    mask-image:radial-gradient(
+      ellipse 48% 62% at 50% 50%,
+      transparent      0%,
+      transparent      22%,
+      rgba(0,0,0,0.18) 30%,
+      rgba(0,0,0,0.48) 38%,
+      rgba(0,0,0,0.78) 46%,
+      rgba(0,0,0,0.94) 54%,
+      black            62%
+    );
+  }
+
+  /* ── Floating card ── */
+  .card-wrap{
+    position:relative;
+    z-index:2; /* above blur overlay */
+    width:100%;
+    max-width:480px;
+    margin:auto 0; /* vertically centres on tall screens, top-aligns when content overflows */
+  }
+  .card{
+    /* Frosted glass: translucent warm gray */
+    background:rgba(244,243,239,0.72);
+    backdrop-filter:blur(24px) saturate(1.4);
+    -webkit-backdrop-filter:blur(24px) saturate(1.4);
+    border:1px solid rgba(255,255,255,0.55);
+    border-radius:22px;
+    box-shadow:
+      0 1px 1px rgba(255,255,255,0.6) inset,  /* top inner highlight */
+      0 2px 4px rgba(0,0,0,0.04),
+      0 8px 24px rgba(0,0,0,0.08),
+      0 24px 56px rgba(0,0,0,0.12),
+      0 48px 80px rgba(0,0,0,0.07);
+    overflow:hidden;
+    text-align:center;
+  }
+
+  /* ── Brand header ── */
+  .brand-header{
+    background:rgba(255,255,255,0.35);
+    padding:18px 32px 16px;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    border-bottom:1px solid var(--border);
+  }
+  .brand-the{
+    font-size:0.65rem;font-weight:600;letter-spacing:0.18em;
+    text-transform:uppercase;color:var(--ink-muted);
+  }
+  .brand-name{
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:1rem;color:var(--ink);
+  }
+  .brand-name em{color:var(--accent);font-style:italic;}
+  .brand-sep{width:1px;height:13px;background:var(--border);margin:0 4px;}
+
+  /* ── Card body ── */
+  .card-body{padding:32px 40px 40px;}
+
+  /* ── Archetype hero ── */
+  .arch-eyebrow{
+    font-size:0.63rem;font-weight:700;letter-spacing:0.16em;
+    text-transform:uppercase;color:var(--ink-muted);margin-bottom:10px;
+  }
+  .arch-name{
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:clamp(2rem,5vw,2.75rem);
+    color:var(--arch-color);
+    line-height:1.05;
+    margin-bottom:6px;
+    text-shadow:0 0 48px color-mix(in srgb, var(--arch-color) 20%, transparent);
+  }
+  .arch-score{
+    font-size:0.85rem;font-weight:500;color:var(--ink-muted);
+    margin-bottom:26px;letter-spacing:0.01em;
+  }
+  .arch-score strong{color:var(--ink);font-weight:700;}
+
+  /* ── Dimension bars ── */
+  .dims-block{
+    background:rgba(255,255,255,0.45);
+    border:1px solid rgba(255,255,255,0.5);
+    border-radius:14px;
+    padding:16px 18px;
+    margin-bottom:18px;
+    text-align:left;
+  }
+  .dims-title{
+    font-size:0.6rem;font-weight:700;letter-spacing:0.14em;
+    text-transform:uppercase;color:var(--ink-muted);margin-bottom:12px;
+  }
+  .dim-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+  .dim-row:last-child{margin-bottom:0;}
+  .dim-label{font-size:0.75rem;color:var(--ink-light);width:96px;flex-shrink:0;}
+  .dim-bar-wrap{flex:1;background:rgba(2,40,20,0.07);border-radius:4px;height:4px;overflow:hidden;}
+  .dim-bar{height:100%;border-radius:4px;background:var(--arch-color);transition:width 0.95s cubic-bezier(.22,1,.36,1);}
+  .dim-val{font-size:0.72rem;font-weight:700;color:var(--ink-muted);width:28px;text-align:right;flex-shrink:0;}
+
+  /* ── Growth path ── */
+  .growth-path{
+    border:1px solid color-mix(in srgb, var(--arch-color) 18%, transparent);
+    background:color-mix(in srgb, var(--arch-color) 4%, white);
+    border-radius:14px;
+    padding:18px 20px;
+    margin-bottom:22px;
+    text-align:left;
+  }
+  .growth-path-label{
+    font-size:0.6rem;font-weight:700;letter-spacing:0.14em;
+    text-transform:uppercase;color:var(--arch-color);margin-bottom:5px;
+  }
+  .growth-path-headline{
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:0.97rem;color:var(--ink);
+    margin-bottom:6px;line-height:1.35;
+  }
+  .growth-path-sub{
+    font-size:0.8rem;color:var(--ink-muted);margin-bottom:14px;line-height:1.6;
+  }
+  .tier-bar-wrap{
+    background:rgba(2,40,20,0.07);
+    border-radius:6px;height:5px;overflow:hidden;
+  }
+  .tier-bar{
+    height:100%;border-radius:6px;
+    background:var(--arch-color);
+    transition:width 1.2s cubic-bezier(.22,1,.36,1);
+  }
+  .tier-labels{
+    display:flex;justify-content:space-between;
+    align-items:flex-start;gap:8px;margin-top:7px;
+  }
+  .tier-label-now{font-size:0.63rem;color:var(--arch-color);font-weight:700;flex-shrink:0;}
+  .tier-label-next{font-size:0.63rem;color:var(--ink-muted);text-align:right;}
+
+  /* ── Share CTA ── */
+  .share-label{
+    font-size:0.63rem;font-weight:700;letter-spacing:0.14em;
+    text-transform:uppercase;color:var(--ink-muted);margin-bottom:12px;
+  }
+  .btn-share{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    width:100%;
+    background:#13dda3;color:white;
+    border:none;border-radius:999px;
+    padding:13px 32px;font-size:0.9rem;font-weight:600;
+    cursor:pointer;transition:opacity 0.18s;
+    font-family:'Inter',system-ui,sans-serif;
+    box-shadow:0 4px 20px rgba(19,221,163,0.16);
+    letter-spacing:0.01em;
+  }
+  .btn-share:hover{opacity:0.86;}
+  .copy-confirm{font-size:0.78rem;color:#22c55e;margin-top:9px;display:none;}
+
+  /* ── Footer ── */
+  .card-footer{
+    margin-top:24px;padding-top:18px;
+    border-top:1px solid var(--border);
+  }
+  .check-inline{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:0.75rem;color:#22c55e;font-weight:500;margin-bottom:5px;
+  }
+  .check-inline svg{width:12px;height:12px;stroke:#22c55e;stroke-width:2.5;fill:none;}
+  .footer-review{font-size:0.75rem;color:var(--ink-muted);margin-bottom:7px;line-height:1.5;}
+  .contact-email{
+    font-size:0.78rem;font-weight:600;
+    color:var(--accent);text-decoration:none;transition:opacity 0.18s;
+  }
+  .contact-email:hover{opacity:0.72;}
+  .home-link{
+    display:inline-block;margin-top:12px;
+    font-size:0.76rem;color:var(--ink-muted);text-decoration:none;
+  }
+  .home-link:hover{color:var(--ink);}
+
+  @media(max-width:600px){
+    body{align-items:flex-start;padding:40px 16px 60px;}
+    .card-body{padding:26px 20px 32px;}
+    .bg-text-layer{grid-template-columns:1fr;padding:24px 16px;}
+    .bg-col:first-child{border-right:none;border-bottom:1px solid rgba(2,40,20,0.08);}
+  }
+</style>
+<link rel="stylesheet" href="css/brand.css">
+</head>
+<body>
+
+<!-- Radial blur vignette overlay -->
+<div class="bg-blur-overlay" aria-hidden="true"></div>
+
+<!-- Background blurred text layer -->
+<div class="bg-text-layer" aria-hidden="true">
+  <div class="bg-col">
+    <span class="bg-label">01 // Systems Architecture</span>
+    The <b>velocity</b> of <strong>brand equity</strong> is directly proportional to its <b>structural clarity.</b> Operators within the 31–60 index routinely struggle with <strong>scale</strong> because their internal systems lack <b>distribution pipelines.</b>
+    <span class="bg-label">02 // Perception Synthesis</span>
+    By auditing the core <strong>visibility gaps</strong> — specifically <b>cross-channel consistency</b> and <b>authoritative positioning</b> — we establish a baseline for <strong>digital compounding.</strong> True authority is an engine; it takes raw, unrefined <b>expertise</b> and converts it into <strong>verifiable market premium.</strong>
+    <span class="bg-label">03 // Authority Engine</span>
+    The <b>gap between effort and outcome</b> is almost always a <strong>positioning</strong> problem disguised as a <b>visibility</b> problem. Businesses that compound fastest are not the ones that work harder — they are the ones that build <strong>systems that work without them.</strong>
+    <span class="bg-label">01 // Systems Architecture</span>
+    The <b>velocity</b> of <strong>brand equity</strong> is directly proportional to its <b>structural clarity.</b> Operators within the 31–60 index routinely struggle with <strong>scale</strong> because their internal systems lack <b>distribution pipelines.</b>
+    <span class="bg-label">02 // Perception Synthesis</span>
+    By auditing the core <strong>visibility gaps</strong> — specifically <b>cross-channel consistency</b> and <b>authoritative positioning</b> — we establish a baseline for <strong>digital compounding.</strong>
+  </div>
+  <div class="bg-col">
+    <span class="bg-label">04 // Market Position Index</span>
+    <strong>Inbound enquiries</strong> are a lagging indicator of <b>brand clarity.</b> When positioning is sharp and <b>authority signals</b> are consistent, the market self-selects. <strong>Manual outreach</strong> becomes optional, not essential.
+    <span class="bg-label">05 // Conversion Architecture</span>
+    The <b>conversion gap</b> is rarely a sales problem. It is almost always a <strong>trust deficit</strong> — a failure to demonstrate <b>proof of competence</b> at the exact moment the prospect is evaluating. <strong>Authority compresses</strong> the decision cycle.
+    <span class="bg-label">06 // Diagnostic Framework</span>
+    Five dimensions. One <strong>authority score.</strong> The diagnostic isolates where your brand <b>leaks attention,</b> where it <strong>fails to convert,</strong> and which lever — when pulled — creates the <b>highest compounding return.</b>
+    <span class="bg-label">04 // Market Position Index</span>
+    <strong>Inbound enquiries</strong> are a lagging indicator of <b>brand clarity.</b> When positioning is sharp and <b>authority signals</b> are consistent, the market self-selects. <strong>Manual outreach</strong> becomes optional, not essential.
+    <span class="bg-label">05 // Conversion Architecture</span>
+    The <b>conversion gap</b> is rarely a sales problem. It is almost always a <strong>trust deficit</strong> — a failure to demonstrate <b>proof of competence</b> at the exact moment the prospect is evaluating.
+  </div>
+</div>
+
+<!-- Floating card -->
+<div class="card-wrap">
+  <div class="card">
+
+    <!-- Brand header -->
+    <div class="brand-header">
+      <img src="img/wbp-logo-wbp.png" alt="We Build Proper" style="height:72px; width:auto; display:block; margin-right:4px;">
+      <span class="brand-sep"></span>
+      <span class="brand-name">Authority <em>Engine™</em></span>
+      <span class="brand-sep"></span>
+      <span class="brand-the">Diagnostic</span>
+    </div>
+
+    <div class="card-body">
+
+      <!-- Archetype hero -->
+      <div class="arch-eyebrow">Your Business Owner Archetype</div>
+      <div class="arch-name" id="archName">—</div>
+      <div class="arch-score" id="archScore"></div>
+
+      <!-- Dimension bars -->
+      <div class="dims-block" id="dimsBlock" style="display:none;">
+        <div class="dims-title">Your 5 Growth Dimensions</div>
+        <div id="dimRows"></div>
+      </div>
+
+      <!-- Growth path -->
+      <div class="growth-path" id="growthPathBlock" style="display:none;">
+        <div class="growth-path-label">Your Growth Path</div>
+        <div class="growth-path-headline" id="growthHeadline"></div>
+        <div class="growth-path-sub" id="growthSub"></div>
+        <div class="tier-bar-wrap"><div class="tier-bar" id="tierBar" style="width:0%"></div></div>
+        <div class="tier-labels">
+          <span class="tier-label-now" id="tierLabelNow"></span>
+          <span class="tier-label-next" id="tierLabelNext"></span>
+        </div>
+      </div>
+
+      <!-- Share CTA -->
+      <button class="btn-share" id="shareBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Share My Result
+      </button>
+      <div class="copy-confirm" id="copyConfirm">Copied to clipboard!</div>
+
+      <!-- Challenge a Peer -->
+      <div style="margin-top:18px; padding-top:18px; border-top:1px solid var(--border);">
+        <div style="font-size:0.63rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-muted); margin-bottom:10px;">Think a peer would score higher?</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button id="challengeWhatsApp" style="flex:1; min-width:80px; display:inline-flex; align-items:center; justify-content:center; gap:6px; background:rgba(2,40,20,0.05); border:1px solid var(--border); border-radius:999px; padding:10px 14px; font-size:0.78rem; font-weight:600; font-family:'Inter',system-ui,sans-serif; color:var(--ink-light); cursor:pointer; transition:background 0.18s, border-color 0.18s;" onmouseover="this.style.background='rgba(2,40,20,0.09)'" onmouseout="this.style.background='rgba(2,40,20,0.05)'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </button>
+          <button id="challengeTelegram" style="flex:1; min-width:80px; display:inline-flex; align-items:center; justify-content:center; gap:6px; background:rgba(2,40,20,0.05); border:1px solid var(--border); border-radius:999px; padding:10px 14px; font-size:0.78rem; font-weight:600; font-family:'Inter',system-ui,sans-serif; color:var(--ink-light); cursor:pointer; transition:background 0.18s;" onmouseover="this.style.background='rgba(2,40,20,0.09)'" onmouseout="this.style.background='rgba(2,40,20,0.05)'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            Telegram
+          </button>
+          <button id="challengeLinkedIn" style="flex:1; min-width:80px; display:inline-flex; align-items:center; justify-content:center; gap:6px; background:rgba(2,40,20,0.05); border:1px solid var(--border); border-radius:999px; padding:10px 14px; font-size:0.78rem; font-weight:600; font-family:'Inter',system-ui,sans-serif; color:var(--ink-light); cursor:pointer; transition:background 0.18s;" onmouseover="this.style.background='rgba(2,40,20,0.09)'" onmouseout="this.style.background='rgba(2,40,20,0.05)'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer">
+        <div class="check-inline">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Diagnostic received
+        </div>
+        <div class="footer-review">Our team will review and reach out within <strong>2 business days</strong>.</div>
+        <a class="contact-email" href="mailto:marketing@webuildproper.com.sg">marketing@webuildproper.com.sg</a>
+        <br>
+        <a class="home-link" href="index.html">← Back to The Authority Engine™</a>
+      </div>
+
+    </div><!-- /.card-body -->
+  </div><!-- /.card -->
+</div><!-- /.card-wrap -->
+
+<script>
+(function() {
+  const archetype = sessionStorage.getItem('ae_archetype');
+  const score     = parseInt(sessionStorage.getItem('ae_score') || '0', 10);
+  const primary   = sessionStorage.getItem('ae_primary') || '';
+  let dims = null;
+  try { dims = JSON.parse(sessionStorage.getItem('ae_dims') || 'null'); } catch(e) {}
+
+  const colorMap = {
+    'Market Leader':      '#22c55e',
+    'Rising Authority':   '#3b82f6',
+    'Hustling Builder':   '#f59e0b',
+    'Invisible Operator': '#6b7280'
+  };
+
+  const tierMap = {
+    'Invisible Operator': { next: 'Hustling Builder', prevMin: 0,  min: 31 },
+    'Hustling Builder':   { next: 'Rising Authority', prevMin: 31, min: 61 },
+    'Rising Authority':   { next: 'Market Leader',    prevMin: 61, min: 81 },
+    'Market Leader':      { next: null,               prevMin: 81, min: 100 }
+  };
+
+  const growthCopy = {
+    'Invisible Operator': {
+      headline: 'The Strategy Gap: Visibility & Positioning.',
+      sub: 'Effort alone cannot build what structure can. We engineer your authority foundation so the market begins coming to you — before you even reach out.'
+    },
+    'Hustling Builder': {
+      headline: 'The Strategy Gap: Systems & Positioning.',
+      sub: 'Hard work got you here; infrastructure takes you next. We optimise your authority engine so you can transition from manual building to effortless market leadership.'
+    },
+    'Rising Authority': {
+      headline: 'The Strategy Gap: Conversion & Scale.',
+      sub: 'You have the credibility — now it needs to convert consistently. We turn your existing authority into a predictable pipeline.'
+    },
+    'Market Leader': {
+      headline: 'The Opportunity: Compound & Protect.',
+      sub: 'You\'ve built what most businesses never reach. We help you systematise it so it scales without depending on you personally.'
+    }
+  };
+
+  const dimOrder = ['Positioning','Visibility','Authority','System Assets','Conversion'];
+  const archColor = archetype ? (colorMap[archetype] || '#13dda3') : '#13dda3';
+  document.documentElement.style.setProperty('--arch-color', archColor);
+
+  const quizUrl = window.location.origin + '/quiz.html';
+
+  // Archetype name + score
+  if (archetype) {
+    document.getElementById('archName').textContent = archetype;
+    const scoreLine = score > 0
+      ? `Authority Score: <strong>${score} / 100</strong>${primary ? ` &nbsp;·&nbsp; Primary gap: ${primary}` : ''}`
+      : `Authority Score: <strong>—</strong>`;
+    document.getElementById('archScore').innerHTML = scoreLine;
+  }
+
+  // Dimension bars
+  if (dims) {
+    const block = document.getElementById('dimsBlock');
+    const rows  = document.getElementById('dimRows');
+    block.style.display = 'block';
+    dimOrder.forEach(name => {
+      const key = name === 'System Assets' ? 'SystemAssets' : name;
+      const val = dims[key] !== undefined ? dims[key] : dims[name];
+      if (val === undefined) return;
+      const pct = Math.round((val / 20) * 100);
+      const isPrimary = name === primary;
+      rows.innerHTML += `
+        <div class="dim-row">
+          <span class="dim-label" style="${isPrimary ? 'color:var(--arch-color);font-weight:600;' : ''}">${name}</span>
+          <div class="dim-bar-wrap"><div class="dim-bar" style="width:0%" data-pct="${pct}"></div></div>
+          <span class="dim-val">${Math.round(val)}</span>
+        </div>`;
+    });
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.dim-bar').forEach(b => { b.style.width = b.dataset.pct + '%'; });
+    });
+  }
+
+  // Growth path
+  if (archetype && tierMap[archetype]) {
+    const tier  = tierMap[archetype];
+    const copy  = growthCopy[archetype];
+    const block = document.getElementById('growthPathBlock');
+    block.style.display = 'block';
+    document.getElementById('growthHeadline').textContent = copy.headline;
+    document.getElementById('growthSub').textContent = copy.sub;
+    document.getElementById('tierLabelNow').textContent = archetype;
+
+    if (tier.next) {
+      const range = tier.min - tier.prevMin;
+      const pct   = score > 0 ? Math.round(((score - tier.prevMin) / range) * 100) : 4;
+      document.getElementById('tierLabelNext').textContent = `Next Milestone: ${tier.next} (${tier.min} pts) →`;
+      requestAnimationFrame(() => {
+        document.getElementById('tierBar').style.width = Math.max(4, Math.min(99, pct)) + '%';
+      });
+    } else {
+      document.getElementById('tierLabelNext').textContent = 'Peak achieved';
+      requestAnimationFrame(() => { document.getElementById('tierBar').style.width = '100%'; });
+    }
+  }
+
+  // Share message
+  const shareMsg = archetype
+    ? `I just discovered I'm a ${archetype} (${score > 0 ? score + '/100' : 'scored'}) on The Authority Engine™ — a business diagnostic by WBP. What's your archetype? ${quizUrl}`
+    : `Discover your business owner archetype on The Authority Engine™: ${quizUrl}`;
+
+  document.getElementById('shareBtn').addEventListener('click', () => {
+    if (navigator.share) {
+      navigator.share({ text: shareMsg }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(shareMsg).then(() => {
+        const confirm = document.getElementById('copyConfirm');
+        confirm.style.display = 'block';
+        setTimeout(() => { confirm.style.display = 'none'; }, 3000);
+      }).catch(() => { prompt('Copy this message:', shareMsg); });
+    }
+  });
+
+  /* ── Challenge a Peer mechanic ── */
+  const challengeMsg = archetype
+    ? `I'm a ${archetype} on The Authority Engine™ — a business diagnostic that tells you exactly what's holding your growth back. Curious what you'd score? It takes 4 minutes. ${quizUrl}?ref=peer_challenge`
+    : `Discover your Business Owner Archetype on The Authority Engine™: ${quizUrl}?ref=peer_challenge`;
+
+  function shareChallenge(platform) {
+    const encoded = encodeURIComponent(challengeMsg);
+    const urls = {
+      whatsapp: `https://wa.me/?text=${encoded}`,
+      telegram: `https://t.me/share/url?url=${encodeURIComponent(quizUrl + '?ref=peer_challenge')}&text=${encoded}`,
+      linkedin: `https://www.linkedin.com/feed/?shareActive=true&text=${encoded}`
+    };
+    if (urls[platform]) window.open(urls[platform], '_blank');
+  }
+
+  document.getElementById('challengeWhatsApp').addEventListener('click', () => shareChallenge('whatsapp'));
+  document.getElementById('challengeTelegram').addEventListener('click', () => shareChallenge('telegram'));
+  document.getElementById('challengeLinkedIn').addEventListener('click', () => shareChallenge('linkedin'));
+
+  /* ── Dynamic OG tags ── */
+  try {
+    const ogImages = {
+      'Invisible Operator': '/img/og/og-invisible-operator.png',
+      'Hustling Builder':   '/img/og/og-hustling-builder.png',
+      'Rising Authority':   '/img/og/og-rising-authority.png',
+      'Market Leader':      '/img/og/og-market-leader.png'
+    };
+    if (archetype) {
+      const title = `I'm a ${archetype} (${score}/100) — Authority Engine™`;
+      const desc  = `My Business Owner Archetype is ${archetype}. Take the free Authority Engine™ diagnostic to find yours — 4 minutes, brutally honest.`;
+      const img   = 'https://authority-engine-xi.vercel.app' + (ogImages[archetype] || '/img/og/og-default.png');
+      document.getElementById('og-title').setAttribute('content', title);
+      document.getElementById('og-description').setAttribute('content', desc);
+      document.getElementById('og-image').setAttribute('content', img);
+      document.getElementById('tw-title').setAttribute('content', title);
+      document.getElementById('tw-description').setAttribute('content', desc);
+      document.getElementById('tw-image').setAttribute('content', img);
+      document.title = title;
+    }
+  } catch(e) {}
+})();
+</script>
+</body>
+</html>
