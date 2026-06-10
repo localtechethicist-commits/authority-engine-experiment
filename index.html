@@ -45,9 +45,10 @@
   /* NAV */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    padding: 18px 32px; display: flex; align-items: center; justify-content: space-between;
+    height: 72px; padding: 0 32px; display: flex; align-items: center; justify-content: space-between;
     background: rgba(247,250,252,0.90); backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border); transition: box-shadow 0.3s;
+    overflow: hidden;
   }
   nav.scrolled { box-shadow: var(--shadow-sm); }
   .nav-logo { text-decoration: none; display: flex; flex-direction: column; gap: 1px; line-height: 1; }
