@@ -589,6 +589,10 @@
     align-self: flex-start;
   }
   .proof-metric::before { content: '✦'; color: var(--accent); font-size: 0.7rem; }
+  .proof-outcomes { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+  .proof-outcomes li { display: flex; align-items: flex-start; gap: 8px; font-size: 0.82rem; font-weight: 600; color: var(--ink); list-style: none; }
+  .proof-outcomes li::before { content: '✓'; color: var(--accent); flex-shrink: 0; }
+  .proof-client-context { font-size: 0.78rem; color: var(--ink-muted); line-height: 1.6; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
 
   /* RESPONSIVE — FOUNDER + PROOF */
   @media (max-width: 1024px) {
@@ -965,43 +969,36 @@
 
         <div class="proof-cards fade-up delay-3">
 
-          <!-- ═══════════════════════════════════════════════════════
-               CASE STUDY CARD 1 — TO FILL IN
-               Fields to update:
-                 .proof-industry-tag  → industry/sector (e.g. "Professional Services")
-                 .proof-quote         → client's verbatim quote, 1–3 sentences
-                 .proof-name          → client first name or initials (e.g. "Jason T.")
-                 .proof-title         → role and company (e.g. "Founder, Arcline Consulting")
-                 .proof-metric        → one concrete result (e.g. "3× more qualified inbound leads")
-               ═══════════════════════════════════════════════════════ -->
           <div class="proof-card">
-            <span class="proof-industry-tag">Professional Services</span>
-            <p class="proof-quote">Placeholder — replace with client's verbatim testimonial. One to three sentences capturing the key shift they experienced.</p>
+            <span class="proof-industry-tag">Eye Health &amp; Vision Wellness</span>
+            <p class="proof-quote">What stood out was their ability to connect business strategy with brand development. The process helped us gain greater clarity on our positioning, communicate our value more effectively and establish a stronger foundation for future growth.</p>
             <div class="proof-meta">
-              <span class="proof-name">Client Name</span>
-              <span class="proof-title">Role · Company Name</span>
-              <span class="proof-metric">Key outcome or result here</span>
+              <span class="proof-name">Nelson Lee</span>
+              <span class="proof-title">Founder &amp; Master Instructor · Lumience Vision</span>
+              <ul class="proof-outcomes">
+                <li>Refined market positioning</li>
+                <li>Clearer value proposition</li>
+                <li>Stronger growth foundation</li>
+              </ul>
             </div>
+            <p class="proof-client-context">Lumience Vision provides natural vision improvement and eye wellness programmes designed to reduce eye strain, control myopia progression, maintain 6/6 vision, and support overall eye health through holistic natural vision methods.</p>
           </div>
 
-          <!-- ═══════════════════════════════════════════════════════
-               CASE STUDY CARD 2 — TO FILL IN
-               Same fields as Card 1 above.
-               ═══════════════════════════════════════════════════════ -->
           <div class="proof-card">
-            <span class="proof-industry-tag">Retail &amp; E-Commerce</span>
-            <p class="proof-quote">Placeholder — replace with the second client's testimonial and their specific outcome when ready.</p>
+            <span class="proof-industry-tag">Health &amp; Wellness</span>
+            <p class="proof-quote">The team worked closely with us during the formative stages of Coco Veda, helping us shape our brand story, sharpen our positioning and think more strategically about the future of the business. Their support provided valuable clarity during an important stage of our growth journey.</p>
             <div class="proof-meta">
-              <span class="proof-name">Client Name</span>
-              <span class="proof-title">Role · Company Name</span>
-              <span class="proof-metric">Key outcome or result here</span>
+              <span class="proof-name">Raj Singh</span>
+              <span class="proof-title">Chief Visionary &amp; Impact Officer · Coco Veda</span>
+              <ul class="proof-outcomes">
+                <li>Sharper brand positioning</li>
+                <li>Clearer business direction</li>
+                <li>Stronger foundation for future growth</li>
+              </ul>
             </div>
+            <p class="proof-client-context">Coco Veda is a Singapore wellness brand focused on sustainable coconut-based products and social impact.</p>
           </div>
 
-          <!-- ═══════════════════════════════════════════════════════
-               CASE STUDY CARD 3 — TO FILL IN
-               Same fields as Card 1 above.
-               ═══════════════════════════════════════════════════════ -->
           <div class="proof-card">
             <span class="proof-industry-tag">B2B / Consulting</span>
             <p class="proof-quote">Placeholder — replace with the third client's testimonial and their specific outcome when ready.</p>
